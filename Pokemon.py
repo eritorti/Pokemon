@@ -4,6 +4,7 @@ import sndhdr
 
 main=Tk()
 main.geometry("1000x800")
+main.resizable(width=False,height=False)
 
 fotoeich=PhotoImage(file="Eich.gif")
 sprechblase=PhotoImage(file="sprechblase.gif")
@@ -17,20 +18,22 @@ eichcounter=0
 eicherzählt=0
 zählercounter=1
 klickfürweiter=Label(main,text="Klick irgendwo hin für weiter!",fg="gray75",font=("Arial",25))
+
+
 def menü():
     global lgamename,bstart,bverlassen
 
-    lgamename=Label(main,text="Pokèmon",fg="dark red",font=("Arial",50))
-    bstart=Button(main,text="Spielen",bg="dark gray",activebackground="gray",command=cstart)
-    bverlassen=Button(main,text="Verlassen",bg="dark gray",activebackground="gray",command=cverlassen)
+    lgamename=Label(main,text="Pokèmon",fg="dark red",font=("Arial",80))
+    bstart=Button(main,text="Spielen",bg="dark gray",activebackground="gray",font=("Arial",25),command=cstart)
+    bverlassen=Button(main,text="Verlassen",bg="dark gray",activebackground="gray",font=("Arial",25),command=cverlassen)
 
-    lgamename.place(x=430,y=260)
-    bstart.place(x=540,y=450)
+    lgamename.place(x=270,y=140)
+    bstart.place(x=430,y=380)
     
-    bverlassen.place(x=533,y=480)
+    bverlassen.place(x=415,y=460)
 
 def cstart():
-    global startback,eich,blase,mann,frau
+    global startback,eich,blase,mann,frau,blaseausfüllen
     lgamename.destroy()
     bstart.destroy()
     bverlassen.destroy()
@@ -56,7 +59,13 @@ def namensichern():
     neinname.place(x=400,y=570)
 
 def abenteuerbeginnt():
-    pass
+    eich.destroy()
+    blase.destroy()
+    blaseausfüllen.destroy()
+    jabereit.destroy()
+    neinbereit.destroy()
+
+
 def nochmalbereit():
     global jainsmenü,neinweiter
     jabereit.destroy()
