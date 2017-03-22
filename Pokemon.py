@@ -50,7 +50,7 @@ def nachfrage():
     mann.destroy()
     frau.destroy()
     blase.configure(text="Also bist du ein"+"\n"+geschlecht+"?"+"\n"*3)
-    jaeinjunge=Button(main,text="Ja",width=40,height=3,bg="dark blue")
+    jaeinjunge=Button(main,text="Ja",width=40,height=3,bg="dark blue",command=weiter)
     jaeinmädchen=Button(main,text="Nein",width=40,height=3,bg="dark red",command=nochmalgeschlecht)
     jaeinjunge.place(x=400,y=500)
     jaeinmädchen.place(x=400,y=570)
