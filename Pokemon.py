@@ -12,15 +12,16 @@ fotoeich=PhotoImage(file="Eich.gif")
 sprechblase=PhotoImage(file="sprechblase.gif")
 mannfoto=PhotoImage(file="ash.gif")
 fraufoto=PhotoImage(file="misty2.gif")
-pokeballrot=PhotoImage(file="pokeballrot.gif")
-pokeballblau=PhotoImage(file="pokeballblau.gif")
-pokeballgrün=PhotoImage(file="pokeballgrün.gif")
+pokeballrot=PhotoImage(file="pokeball.gif")
+pokeballblau=PhotoImage(file="pokeball.gif")
+pokeballgrün=PhotoImage(file="pokeball.gif")
 schiggypic=PhotoImage(file="schiggy.gif")
 glumandapic=PhotoImage(file="glumanda.gif")
 bisasampic=PhotoImage(file="bisasam.gif")
 
-hintergrund=Label(main,image=mainfarbe)
-hintergrund.place(x=0,y=0)
+ashfrontlinkesbein=PhotoImage(file="ash_front_linkes_bein.gif")
+ashfrontrechtesbein=PhotoImage(file="ash_front_rechtes_bein.gif")
+ashfrontsteht=PhotoImage(file="ash_front_stand.gif")
 
 geschlecht=None
 v=StringVar()
@@ -52,25 +53,26 @@ def cstart():
     global startback,eich,blase,mann,frau,blaseausfüllen
     lgamename.destroy()
     bstart.destroy()
-    bverlassen.destroy()
 
+    bverlassen.destroy()
     eich=Label(main,image=fotoeich)
-    blase=Label(main,image=sprechblase,text="Hallo erstmal ,"+"\n"+"ich bin Professor Eich."+"\n"+"bist du ein Junge"+"\n"+"oder ein Mädchen?"+"\n"*3,compound="center",font=("Arial",9))
+    blase=Label(main,image=sprechblase,text="Hallo erstmal ,"+"\n"+"ich bin Professor Eich."+"\n"+"bist du ein Junge"+"\n"+"oder ein Mädchen?"+"\n"*3,compound="center",font=("Arial",9),width=220,height=140)
 #    blaseausfüllen=Label(main,text="  ")
     
 #    blaseausfüllen.place(x=320,y=190)
     eich.place(x=400,y=140)
-    blase.place(x=320,y=60)
+    blase.place(x=245,y=60)
     geschlechter()
 
 def abenteuerbeginnt():
     eich.place(x=800,y=430)
-    blase.place(x=720,y=350)
+    blase.place(x=645,y=350)
     blase.configure(text="Sehr gut ,"+"\n"+"bitte such dir jetzt"+"\n"+"dein Pokèmon aus."+"\n"*4)
 #    blaseausfüllen.destroy()
     jabereit.destroy()
     neinbereit.destroy()
     eichpluspokemon()
+
 def pokemongewählt():
     global schiggycounter,glumandacounter,bisasamcounter,starterpokemon,eicherzähltpokemon,eicherzähltpokemon
     if(schiggycounter==1):
@@ -90,18 +92,65 @@ def pokemongewählt():
         neinbisasam.destroy()
     klickfürweiter2.place(x=320,y=750)
     eich.place(x=400,y=140)
-    blase.place(x=320,y=60)
+    blase.place(x=245,y=60)
     gleichgehtslos()
 
 def gleichgehtslos():
-    global eichcounterpokemon,eicherzähltpokemon,klickfürweiter,zählercounterpokemon,eichzählerpokemon
+    global eichcounterpokemon,eicherzähltpokemon,klickfürweiter2,zählercounterpokemon,eichzählerpokemon
     blase.configure(text=starterpokemon+" also ,"+"\n"+"ich habe sofort gesehen"+"\n"+"das ihr euch mögt."+"\n"*3)
     if(zählercounterpokemon==1):
         eichzählerpokemon() 
     if(eichcounterpokemon==1):
         blase.configure(text="Nun kann dein"+"\n"+"Abenteuer beginnen ,"+"\n"+"viel Spaß und Erfolg!"+"\n"*4)
+    if(eichcounterpokemon==2):
+        eich.destroy()
+        blase.destroy()
+        klickfürweiter2.destroy()
+        firstspawn()
 
-    
+def firstspawn():
+    global move,karte,ash_front_steht,ashmovecounter,x,y,frontlinksrechts
+    move=False
+    ashmovecounter=0
+    frontlinksrechts=0
+    x=20
+    y=20
+    main.bind("<Button-1>",cpass)
+#    main.configure(bg="black")
+    karte=Canvas(main,width=500,height=300)
+    ash_front_steht=Label(karte,image=ashfrontsteht)
+
+    karte.place(x=200,y=200)
+    ash_front_steht.place(x=x,y=x)
+    ashbewegung()
+
+def ashbewegung():
+    global ashmovecounter
+    ashmovecounter +=1
+    if(ashmovecounter==1):
+        main.bind("<Key-Down>",ashmovefront)
+        
+
+def ashmovefront(event):
+    global frontlinksrechts,x,y
+    frontlinksrechts+=1
+    y +=4
+    if(frontlinksrechts==1):
+        ash_front_steht.configure(image=ashfrontsteht)
+        ash_front_steht.place(x=x,y=y)
+    elif(frontlinksrechts==2):
+        ash_front_steht.configure(image=ashfrontrechtesbein)
+        ash_front_steht.place(x=x,y=y)
+    elif(frontlinksrechts==3):
+        ash_front_steht.configure(image=ashfrontsteht)
+        ash_front_steht.place(x=x,y=y)
+    elif(frontlinksrechts==4):
+        ash_front_steht.configure(image=ashfrontlinkesbein)
+        ash_front_steht.place(x=x,y=y)
+        frontlinksrechts=0
+    if(y>=297):
+        y=20
+        ash_front_steht.place(y=y)
 
 def eichpluspokemon():
     global eicherzähltpokemon
@@ -117,7 +166,6 @@ def eichzählerpokemon():
 def eicherzähltweiterpokemon(event):
     global eichcounterpokemon
     eichcounterpokemon +=1
-    print(eichcounterpokemon)
     gleichgehtslos()
 
 def pokemonwählen():
@@ -297,8 +345,8 @@ def namebestimmen():
 
 def geschlechter():
     global mann,frau
-    mann=Button(main,image=mannfoto,command=männlich)
-    frau=Button(main,image=fraufoto,command=weiblich)
+    mann=Button(main,image=mannfoto,relief=FLAT,command=männlich)
+    frau=Button(main,image=fraufoto,relief=FLAT,command=weiblich)
     mann.place(x=130,y=440)
     frau.place(x=700,y=420)
 
