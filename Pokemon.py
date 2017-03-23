@@ -6,19 +6,35 @@ main=Tk()
 main.geometry("1000x800")
 main.resizable(width=False,height=False)
 
-fotoeich=PhotoImage(file="Eich.gif")
-sprechblase=PhotoImage(file="sprechblase.gif")
-mannfoto=PhotoImage(file="ash.gif")
-fraufoto=PhotoImage(file="misty2.gif")
+
+mainfarbe=PhotoImage(file="Pokemon_Bilder/main.gif")
+fotoeich=PhotoImage(file="Pokemon_Bilder/Eich.gif")
+sprechblase=PhotoImage(file="Pokemon_Bilder/sprechblase.gif")
+mannfoto=PhotoImage(file="Pokemon_Bilder/ash.gif")
+fraufoto=PhotoImage(file="Pokemon_Bilder/misty2.gif")
+pokeballrot=PhotoImage(file="Pokemon_Bilder/pokeballrot.gif")
+pokeballblau=PhotoImage(file="Pokemon_Bilder/pokeballblau.gif")
+pokeballgrün=PhotoImage(file="Pokemon_Bilder/pokeballgrün.gif")
+schiggypic=PhotoImage(file="Pokemon_Bilder/schiggy.gif")
+glumandapic=PhotoImage(file="Pokemon_Bilder/glumanda.gif")
+bisasampic=PhotoImage(file="Pokemon_Bilder/bisasam.gif")
+
+hintergrund=Label(main,image=mainfarbe)
+hintergrund.place(x=0,y=0)
+
 geschlecht=None
 v=StringVar()
 name=v
+starterpokemon=None
 #print(name.get())
 eichcounter=0
+eichcounterpokemon=0
 eicherzählt=0
+eicherzähltpokemon=0
 zählercounter=1
+zählercounterpokemon=1
 klickfürweiter=Label(main,text="Klick irgendwo hin für weiter!",fg="gray75",font=("Arial",25))
-
+klickfürweiter2=Label(main,text="Klick irgendwo hin für weiter!",fg="gray75",font=("Arial",25))
 
 def menü():
     global lgamename,bstart,bverlassen
@@ -40,12 +56,147 @@ def cstart():
 
     eich=Label(main,image=fotoeich)
     blase=Label(main,image=sprechblase,text="Hallo erstmal ,"+"\n"+"ich bin Professor Eich."+"\n"+"bist du ein Junge"+"\n"+"oder ein Mädchen?"+"\n"*3,compound="center",font=("Arial",9))
-    blaseausfüllen=Label(main,text="  ")
+#    blaseausfüllen=Label(main,text="  ")
     
-    blaseausfüllen.place(x=320,y=190)
+#    blaseausfüllen.place(x=320,y=190)
     eich.place(x=400,y=140)
     blase.place(x=320,y=60)
     geschlechter()
+
+def abenteuerbeginnt():
+    eich.place(x=800,y=430)
+    blase.place(x=720,y=350)
+    blase.configure(text="Sehr gut ,"+"\n"+"bitte such dir jetzt"+"\n"+"dein Pokèmon aus."+"\n"*4)
+#    blaseausfüllen.destroy()
+    jabereit.destroy()
+    neinbereit.destroy()
+    eichpluspokemon()
+def pokemongewählt():
+    global schiggycounter,glumandacounter,bisasamcounter,starterpokemon,eicherzähltpokemon,eicherzähltpokemon
+    if(schiggycounter==1):
+        schiggycounter -=1
+        schiggy.destroy()
+        jaschiggy.destroy()
+        neinschiggy.destroy()
+    if(glumandacounter==1):
+        glumandacounter -=1
+        glumanda.destroy()
+        jaglumanda.destroy()
+        neinglumanda.destroy()
+    if(bisasamcounter==1):
+        bisasamcounter -=1
+        bisasam.destroy()
+        jabisasam.destroy()
+        neinbisasam.destroy()
+    klickfürweiter2.place(x=320,y=750)
+    eich.place(x=400,y=140)
+    blase.place(x=320,y=60)
+    gleichgehtslos()
+
+def gleichgehtslos():
+    global eichcounterpokemon,eicherzähltpokemon,klickfürweiter,zählercounterpokemon,eichzählerpokemon
+    blase.configure(text=starterpokemon+" also ,"+"\n"+"ich habe sofort gesehen"+"\n"+"das ihr euch mögt."+"\n"*3)
+    if(zählercounterpokemon==1):
+        eichzählerpokemon() 
+    if(eichcounterpokemon==1):
+        blase.configure(text="Nun kann dein"+"\n"+"Abenteuer beginnen ,"+"\n"+"viel Spaß und Erfolg!"+"\n"*4)
+
+    
+
+def eichpluspokemon():
+    global eicherzähltpokemon
+    eicherzähltpokemon +=1
+    pokemonwählen()
+
+def eichzählerpokemon():
+    global zählercounterpokemon
+    zählercounterpokemon=0
+    if(eicherzähltpokemon==1):
+        main.bind("<Button-1>",eicherzähltweiterpokemon)
+
+def eicherzähltweiterpokemon(event):
+    global eichcounterpokemon
+    eichcounterpokemon +=1
+    print(eichcounterpokemon)
+    gleichgehtslos()
+
+def pokemonwählen():
+    global pokeball1,pokeball2,pokeball3
+    pokeball1=Button(main,image=pokeballrot,relief=FLAT,command=glumandafrage)
+    pokeball2=Button(main,image=pokeballblau,relief=FLAT,command=schiggyfrage)
+    pokeball3=Button(main,image=pokeballgrün,relief=FLAT,command=bisasamfrage)
+    pokeball1.place(x=150,y=200)
+    pokeball2.place(x=450,y=200)
+    pokeball3.place(x=750,y=200)
+schiggycounter=0
+glumandacounter=0
+bisasamcounter=0
+
+def glumandafrage():
+    global glumanda,glumandacounter,jaglumanda,neinglumanda,starterpokemon
+    glumandacounter +=1
+    starterpokemon="Glumanda"
+    pokeball1.destroy()
+    pokeball2.destroy()
+    pokeball3.destroy()
+    blase.configure(text="Das ist Glumanda ,"+"\n"+"ein Feuer Pokèmon ,"+"\n"+"willst du ihn nehmen?"+"\n"*3)    
+    glumanda=Label(main,image=glumandapic)
+    jaglumanda=Button(main,text="Ja , na klar!",width=40,height=3,bg="dark blue",command=pokemongewählt)
+    neinglumanda=Button(main,text="Nein , ein anderes!",width=40,height=3,bg="dark red",command=nochmalpokemon)
+
+    jaglumanda.place(x=360,y=500)
+    neinglumanda.place(x=360,y=570)
+    glumanda.place(x=400,y=200)    
+def schiggyfrage():
+    global schiggy,schiggycounter,jaschiggy,neinschiggy,starterpokemon
+    schiggycounter +=1
+    starterpokemon="Schiggy"
+    pokeball1.destroy()
+    pokeball2.destroy()
+    pokeball3.destroy()
+    blase.configure(text="Das ist Schiggy ,"+"\n"+"ein Wasser Pokèmon ,"+"\n"+"willst du ihn nehmen?"+"\n"*3)
+    schiggy=Label(main,image=schiggypic)
+    jaschiggy=Button(main,text="Ja , na klar!",width=40,height=3,bg="dark blue",command=pokemongewählt)
+    neinschiggy=Button(main,text="Nein , ein anderes!",width=40,height=3,bg="dark red",command=nochmalpokemon)
+
+    jaschiggy.place(x=360,y=500)
+    neinschiggy.place(x=360,y=570)
+    schiggy.place(x=400,y=200)
+def bisasamfrage():
+    global bisasam,bisasamcounter,jabisasam,neinbisasam,starterpokemon
+    bisasamcounter +=1
+    starterpokemon="Bisasam"
+    pokeball1.destroy()
+    pokeball2.destroy()
+    pokeball3.destroy()
+    blase.configure(text="Das ist Bisasam ,"+"\n"+"ein Blatt Pokèmon ,"+"\n"+"willst du ihn nehmen?"+"\n"*3)
+    bisasam=Label(main,image=bisasampic)
+    jabisasam=Button(main,text="Ja , na klar!",width=40,height=3,bg="dark blue",command=pokemongewählt)
+    neinbisasam=Button(main,text="Nein , ein anderes!",width=40,height=3,bg="dark red",command=nochmalpokemon)
+
+    jabisasam.place(x=360,y=500)
+    neinbisasam.place(x=360,y=570)
+    bisasam.place(x=400,y=200)
+def nochmalpokemon():
+    global schiggycounter,glumandacounter,bisasamcounter,starterpokemon
+    if(schiggycounter==1):
+        schiggycounter -=1
+        schiggy.destroy()
+        jaschiggy.destroy()
+        neinschiggy.destroy()
+    if(glumandacounter==1):
+        glumandacounter -=1
+        glumanda.destroy()
+        jaglumanda.destroy()
+        neinglumanda.destroy()
+    if(bisasamcounter==1):
+        bisasamcounter -=1
+        bisasam.destroy()
+        jabisasam.destroy()
+        neinbisasam.destroy()
+    starterpokemon=None
+    blase.configure(text="Ok nochmal ,"+"\n"+"such dir jetzt"+"\n"+"dein Pokèmon aus."+"\n"*4)
+    pokemonwählen()
 
 def namensichern():
     global janame,neinname
@@ -58,14 +209,6 @@ def namensichern():
     janame.place(x=400,y=500)
     neinname.place(x=400,y=570)
 
-def abenteuerbeginnt():
-    eich.destroy()
-    blase.destroy()
-    blaseausfüllen.destroy()
-    jabereit.destroy()
-    neinbereit.destroy()
-
-
 def nochmalbereit():
     global jainsmenü,neinweiter
     jabereit.destroy()
@@ -75,6 +218,7 @@ def nochmalbereit():
     neinweiter=Button(main,text="Nein",width=40,height=3,bg="dark red",command=nochmalnamebestätigt)
     jainsmenü.place(x=400,y=500)
     neinweiter.place(x=400,y=570)
+
 def stop():
     jainsmenü.destroy()
     neinweiter.destroy()
@@ -89,7 +233,7 @@ def eichplus():
     namebestätigt()
 def eichzähler():
     global zählercounter
-    zählercounter -=2
+    zählercounter =0
     if(eicherzählt==1):
         main.bind("<Button-1>",eicherzähltweiter)
 def nochmalnamebestätigt():
@@ -98,7 +242,6 @@ def nochmalnamebestätigt():
     namebestätigt()
 def namebestätigt():
     global eichcounter,eicherzählt,name,jabereit,neinbereit,klickfürweiter,zählercounter,eichzähler
-#    print(name)
     janame.destroy()
     neinname.destroy()
     jabereit=Button(main,text="Ja , na klar!",width=40,height=3,bg="dark blue",command=abenteuerbeginnt)
