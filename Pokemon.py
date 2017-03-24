@@ -1,8 +1,8 @@
 from tkinter import ttk
 from tkinter import *
-import sndhdr
+import tkinter
 
-main=Tk()
+main=tkinter.Tk()
 main.geometry("1000x800")
 main.resizable(width=False,height=False)
 
@@ -18,7 +18,7 @@ pokeballgrün=PhotoImage(file="pokeball.gif")
 schiggypic=PhotoImage(file="schiggy.gif")
 glumandapic=PhotoImage(file="glumanda.gif")
 bisasampic=PhotoImage(file="bisasam.gif")
-
+##############################################################################################
 ashfrontlinkesbein=PhotoImage(file="ash_front_linkes_bein.gif")
 ashfrontrechtesbein=PhotoImage(file="ash_front_rechtes_bein.gif")
 ashfrontsteht=PhotoImage(file="ash_front_stand.gif")
@@ -31,6 +31,10 @@ ashleftrechtesbein=PhotoImage(file="ash_left_rechtes_bein.gif")
 ashrightsteht=PhotoImage(file="ash_right_stand.gif")
 ashrightlinkesbein=PhotoImage(file="ash_right_linkes_bein.gif")
 ashrightrechtesbein=PhotoImage(file="ash_right_rechtes_bein.gif")
+#############################################################################################
+herohouseup=PhotoImage(file="herohouseoben.gif")
+herohousedown=PhotoImage(file="herohouseunten.gif")
+
 
 geschlecht=None
 v=StringVar()
@@ -118,24 +122,25 @@ def gleichgehtslos():
         firstspawn()
 
 def firstspawn():
-    global move,karte,ash_front_steht,ashmovecounter,x,y,frontlinksrechts,backlinksrechts,leftlinksrechts,rightlinksrechts
+    global move,karte,ash_front_steht,ashmovecounter,x,y,frontlinksrechts,backlinksrechts,leftlinksrechts,rightlinksrechts,geschlecht
     move=False
     ashmovecounter=0
     frontlinksrechts=0
     backlinksrechts=0
     leftlinksrechts=0
     rightlinksrechts=0
-    x=20
-    y=20
+    x=128
+    y=130
     main.bind("<Button-1>",cpass)
     main.configure(bg="black")
-    karte=Canvas(main,width=500,height=300)
+    karte=tkinter.Canvas(main,width=157,height=157)
+    karte.create_image(80,80,image=herohouseup)
     ash_front_steht=Label(karte,image=ashfrontsteht)
-
-    karte.place(x=200,y=200)
-    ash_front_steht.place(x=x,y=x)
-    ashbewegung()
-
+    karte.focus_set()
+    karte.place(x=380,y=260)
+    if(geschlecht=="Junge"):
+        ashbewegung()
+        ash_front_steht.place(x=x,y=y)
 def ashbewegung():
     global ashmovecounter
     ashmovecounter +=1
@@ -154,21 +159,21 @@ def ashmovefront(event):
         y +=4
         ash_front_steht.configure(image=ashfrontsteht)
         ash_front_steht.place(x=x,y=y)
-    elif(frontlinksrechts==3):
+    elif(frontlinksrechts==2):
         y +=4
         ash_front_steht.configure(image=ashfrontrechtesbein)
         ash_front_steht.place(x=x,y=y)
-    elif(frontlinksrechts==6):
+    elif(frontlinksrechts==4):
         y +=4
         ash_front_steht.configure(image=ashfrontsteht)
         ash_front_steht.place(x=x,y=y)
-    elif(frontlinksrechts==9):
+    elif(frontlinksrechts==5):
         y +=4
         ash_front_steht.configure(image=ashfrontlinkesbein)
         ash_front_steht.place(x=x,y=y)
         frontlinksrechts=0
-    if(y>=293):
-        y=10
+    if(y==138):
+        y -=4
         ash_front_steht.place(y=y)
 def ashmoveback(event):
     global backlinksrechts,backlinksrechts,leftlinksrechts,rightlinksrechts,x,y
@@ -180,21 +185,21 @@ def ashmoveback(event):
         y -=4
         ash_front_steht.configure(image=ashbacksteht)
         ash_front_steht.place(x=x,y=y)
-    elif(backlinksrechts==3):
+    elif(backlinksrechts==2):
         y -=4
         ash_front_steht.configure(image=ashbackrechtesbein)
         ash_front_steht.place(x=x,y=y)
-    elif(backlinksrechts==6):
+    elif(backlinksrechts==4):
         y -=4
         ash_front_steht.configure(image=ashbacksteht)
         ash_front_steht.place(x=x,y=y)
-    elif(backlinksrechts==9):
+    elif(backlinksrechts==5):
         y -=4
         ash_front_steht.configure(image=ashbacklinkesbein)
         ash_front_steht.place(x=x,y=y)
         backlinksrechts=0
-    if(y<=0):
-        y=290
+    if(y==2):
+        y +=4
         ash_front_steht.place(y=y)
 def ashmoveleft(event):
     global leftlinksrechts,backlinksrechts,leftlinksrechts,rightlinksrechts,x,y
@@ -206,21 +211,21 @@ def ashmoveleft(event):
         x -=4
         ash_front_steht.configure(image=ashleftsteht)
         ash_front_steht.place(x=x,y=y)
-    elif(leftlinksrechts==3):
+    elif(leftlinksrechts==2):
         x -=4
         ash_front_steht.configure(image=ashleftrechtesbein)
         ash_front_steht.place(x=x,y=y)
-    elif(leftlinksrechts==6):
+    elif(leftlinksrechts==4):
         x -=4
         ash_front_steht.configure(image=ashleftsteht)
         ash_front_steht.place(x=x,y=y)
-    elif(leftlinksrechts==9):
+    elif(leftlinksrechts==5):
         x -=4
         ash_front_steht.configure(image=ashleftlinkesbein)
         ash_front_steht.place(x=x,y=y)
         leftlinksrechts=0
-    if(x<=3):
-        x=490
+    if(x==0):
+        x +=4
         ash_front_steht.place(y=y)
 def ashmoveright(event):
     global rightlinksrechts,backlinksrechts,leftlinksrechts,rightlinksrechts,x,y
@@ -232,21 +237,21 @@ def ashmoveright(event):
         x +=4
         ash_front_steht.configure(image=ashrightsteht)
         ash_front_steht.place(x=x,y=y)
-    elif(rightlinksrechts==3):
+    elif(rightlinksrechts==2):
         x +=4
         ash_front_steht.configure(image=ashrightrechtesbein)
         ash_front_steht.place(x=x,y=y)
-    elif(rightlinksrechts==6):
+    elif(rightlinksrechts==4):
         x +=4
         ash_front_steht.configure(image=ashrightsteht)
         ash_front_steht.place(x=x,y=y)
-    elif(rightlinksrechts==9):
+    elif(rightlinksrechts==5):
         x +=4
         ash_front_steht.configure(image=ashrightlinkesbein)
         ash_front_steht.place(x=x,y=y)
         rightlinksrechts=0
-    if(x>=297):
-        x=10
+    if(x==140):
+        x -=4
         ash_front_steht.place(y=y)
 
 def eichpluspokemon():
