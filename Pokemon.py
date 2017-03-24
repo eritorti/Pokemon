@@ -22,6 +22,15 @@ bisasampic=PhotoImage(file="bisasam.gif")
 ashfrontlinkesbein=PhotoImage(file="ash_front_linkes_bein.gif")
 ashfrontrechtesbein=PhotoImage(file="ash_front_rechtes_bein.gif")
 ashfrontsteht=PhotoImage(file="ash_front_stand.gif")
+ashbacksteht=PhotoImage(file="ash_back_stand.gif")
+ashbacklinkesbein=PhotoImage(file="ash_back_linkes_bein.gif")
+ashbackrechtesbein=PhotoImage(file="ash_back_rechtes_bein.gif")
+ashleftsteht=PhotoImage(file="ash_left_stand.gif")
+ashleftlinkesbein=PhotoImage(file="ash_left_linkes_bein.gif")
+ashleftrechtesbein=PhotoImage(file="ash_left_rechtes_bein.gif")
+ashrightsteht=PhotoImage(file="ash_right_stand.gif")
+ashrightlinkesbein=PhotoImage(file="ash_right_linkes_bein.gif")
+ashrightrechtesbein=PhotoImage(file="ash_right_rechtes_bein.gif")
 
 geschlecht=None
 v=StringVar()
@@ -56,18 +65,18 @@ def cstart():
 
     bverlassen.destroy()
     eich=Label(main,image=fotoeich)
-    blase=Label(main,image=sprechblase,text="Hallo erstmal ,"+"\n"+"ich bin Professor Eich."+"\n"+"bist du ein Junge"+"\n"+"oder ein Mädchen?"+"\n"*3,compound="center",font=("Arial",9),width=220,height=140)
+    blase=Label(main,image=sprechblase,text="Hallo erstmal ,"+"\n"+"ich bin Professor Eich."+"\n"+"bist du ein Junge"+"\n"+"oder ein Mädchen?"+"\n"*2,compound="center",font=("Arial",9),width=220,height=180)
 #    blaseausfüllen=Label(main,text="  ")
     
 #    blaseausfüllen.place(x=320,y=190)
     eich.place(x=400,y=140)
-    blase.place(x=245,y=60)
+    blase.place(x=245,y=25)
     geschlechter()
 
 def abenteuerbeginnt():
     eich.place(x=800,y=430)
     blase.place(x=645,y=350)
-    blase.configure(text="Sehr gut ,"+"\n"+"bitte such dir jetzt"+"\n"+"dein Pokèmon aus."+"\n"*4)
+    blase.configure(text="Sehr gut ,"+"\n"+"bitte such dir jetzt"+"\n"+"dein Pokèmon aus."+"\n"*2)
 #    blaseausfüllen.destroy()
     jabereit.destroy()
     neinbereit.destroy()
@@ -109,14 +118,17 @@ def gleichgehtslos():
         firstspawn()
 
 def firstspawn():
-    global move,karte,ash_front_steht,ashmovecounter,x,y,frontlinksrechts
+    global move,karte,ash_front_steht,ashmovecounter,x,y,frontlinksrechts,backlinksrechts,leftlinksrechts,rightlinksrechts
     move=False
     ashmovecounter=0
     frontlinksrechts=0
+    backlinksrechts=0
+    leftlinksrechts=0
+    rightlinksrechts=0
     x=20
     y=20
     main.bind("<Button-1>",cpass)
-#    main.configure(bg="black")
+    main.configure(bg="black")
     karte=Canvas(main,width=500,height=300)
     ash_front_steht=Label(karte,image=ashfrontsteht)
 
@@ -129,27 +141,112 @@ def ashbewegung():
     ashmovecounter +=1
     if(ashmovecounter==1):
         main.bind("<Key-Down>",ashmovefront)
-        
-
+        main.bind("<Key-Up>",ashmoveback)
+        main.bind("<Key-Right>",ashmoveright)
+        main.bind("<Key-Left>",ashmoveleft)
 def ashmovefront(event):
-    global frontlinksrechts,x,y
+    global frontlinksrechts,backlinksrechts,leftlinksrechts,rightlinksrechts,x,y
     frontlinksrechts+=1
-    y +=4
+    backlinksrechts=0
+    leftlinksrechts=0
+    rightlinksrechts=0
     if(frontlinksrechts==1):
+        y +=4
         ash_front_steht.configure(image=ashfrontsteht)
-        ash_front_steht.place(x=x,y=y)
-    elif(frontlinksrechts==2):
-        ash_front_steht.configure(image=ashfrontrechtesbein)
         ash_front_steht.place(x=x,y=y)
     elif(frontlinksrechts==3):
+        y +=4
+        ash_front_steht.configure(image=ashfrontrechtesbein)
+        ash_front_steht.place(x=x,y=y)
+    elif(frontlinksrechts==6):
+        y +=4
         ash_front_steht.configure(image=ashfrontsteht)
         ash_front_steht.place(x=x,y=y)
-    elif(frontlinksrechts==4):
+    elif(frontlinksrechts==9):
+        y +=4
         ash_front_steht.configure(image=ashfrontlinkesbein)
         ash_front_steht.place(x=x,y=y)
         frontlinksrechts=0
-    if(y>=297):
-        y=20
+    if(y>=293):
+        y=10
+        ash_front_steht.place(y=y)
+def ashmoveback(event):
+    global backlinksrechts,backlinksrechts,leftlinksrechts,rightlinksrechts,x,y
+    backlinksrechts+=1
+    frontlinksrechts=0
+    leftlinksrechts=0
+    rightlinksrechts=0
+    if(backlinksrechts==1):
+        y -=4
+        ash_front_steht.configure(image=ashbacksteht)
+        ash_front_steht.place(x=x,y=y)
+    elif(backlinksrechts==3):
+        y -=4
+        ash_front_steht.configure(image=ashbackrechtesbein)
+        ash_front_steht.place(x=x,y=y)
+    elif(backlinksrechts==6):
+        y -=4
+        ash_front_steht.configure(image=ashbacksteht)
+        ash_front_steht.place(x=x,y=y)
+    elif(backlinksrechts==9):
+        y -=4
+        ash_front_steht.configure(image=ashbacklinkesbein)
+        ash_front_steht.place(x=x,y=y)
+        backlinksrechts=0
+    if(y<=0):
+        y=290
+        ash_front_steht.place(y=y)
+def ashmoveleft(event):
+    global leftlinksrechts,backlinksrechts,leftlinksrechts,rightlinksrechts,x,y
+    leftlinksrechts+=1
+    backlinksrechts=0
+    frontlinksrechts=0
+    rightlinksrechts=0
+    if(leftlinksrechts==1):
+        x -=4
+        ash_front_steht.configure(image=ashleftsteht)
+        ash_front_steht.place(x=x,y=y)
+    elif(leftlinksrechts==3):
+        x -=4
+        ash_front_steht.configure(image=ashleftrechtesbein)
+        ash_front_steht.place(x=x,y=y)
+    elif(leftlinksrechts==6):
+        x -=4
+        ash_front_steht.configure(image=ashleftsteht)
+        ash_front_steht.place(x=x,y=y)
+    elif(leftlinksrechts==9):
+        x -=4
+        ash_front_steht.configure(image=ashleftlinkesbein)
+        ash_front_steht.place(x=x,y=y)
+        leftlinksrechts=0
+    if(x<=3):
+        x=490
+        ash_front_steht.place(y=y)
+def ashmoveright(event):
+    global rightlinksrechts,backlinksrechts,leftlinksrechts,rightlinksrechts,x,y
+    rightlinksrechts+=1
+    backlinksrechts=0
+    leftlinksrechts=0
+    frontlinksrechts=0
+    if(rightlinksrechts==1):
+        x +=4
+        ash_front_steht.configure(image=ashrightsteht)
+        ash_front_steht.place(x=x,y=y)
+    elif(rightlinksrechts==3):
+        x +=4
+        ash_front_steht.configure(image=ashrightrechtesbein)
+        ash_front_steht.place(x=x,y=y)
+    elif(rightlinksrechts==6):
+        x +=4
+        ash_front_steht.configure(image=ashrightsteht)
+        ash_front_steht.place(x=x,y=y)
+    elif(rightlinksrechts==9):
+        x +=4
+        ash_front_steht.configure(image=ashrightlinkesbein)
+        ash_front_steht.place(x=x,y=y)
+        rightlinksrechts=0
+    if(x>=297):
+        x=10
         ash_front_steht.place(y=y)
 
 def eichpluspokemon():
