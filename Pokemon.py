@@ -74,12 +74,12 @@ def cstart():
     
 #    blaseausfüllen.place(x=320,y=190)
     eich.place(x=400,y=140)
-    blase.place(x=245,y=25)
+    blase.place(x=245,y=23)
     geschlechter()
 
 def abenteuerbeginnt():
-    eich.place(x=800,y=430)
-    blase.place(x=645,y=350)
+    eich.place(x=800,y=433)
+    blase.place(x=645,y=316)
     blase.configure(text="Sehr gut ,"+"\n"+"bitte such dir jetzt"+"\n"+"dein Pokèmon aus."+"\n"*2)
 #    blaseausfüllen.destroy()
     jabereit.destroy()
@@ -105,7 +105,7 @@ def pokemongewählt():
         neinbisasam.destroy()
     klickfürweiter2.place(x=320,y=750)
     eich.place(x=400,y=140)
-    blase.place(x=245,y=60)
+    blase.place(x=245,y=23)
     gleichgehtslos()
 
 def gleichgehtslos():
@@ -155,6 +155,7 @@ def ashmovefront(event):
     backlinksrechts=0
     leftlinksrechts=0
     rightlinksrechts=0
+    print(x,y)
     if(frontlinksrechts==1):
         y +=4
         ash_front_steht.configure(image=ashfrontsteht)
@@ -175,12 +176,19 @@ def ashmovefront(event):
     if(y==138):
         y -=4
         ash_front_steht.place(y=y)
+    elif(x<=15 and y>=110):        
+        y -=4
+        ash_front_steht.place(y=y,x=x)
+    elif(x>=108 and x<=140 and y==134 or x>=108 and x<=140 and y==102 or x>=112 and y==50):
+        y -=4
+        ash_front_steht.place(x=x,y=y)
 def ashmoveback(event):
     global backlinksrechts,backlinksrechts,leftlinksrechts,rightlinksrechts,x,y
     backlinksrechts+=1
     frontlinksrechts=0
     leftlinksrechts=0
     rightlinksrechts=0
+    print(x,y)
     if(backlinksrechts==1):
         y -=4
         ash_front_steht.configure(image=ashbacksteht)
@@ -198,15 +206,24 @@ def ashmoveback(event):
         ash_front_steht.configure(image=ashbacklinkesbein)
         ash_front_steht.place(x=x,y=y)
         backlinksrechts=0
-    if(y==2):
+    if(y==42):
         y +=4
-        ash_front_steht.place(y=y)
+        ash_front_steht.place(y=y,x=x)
+    if(x<=76 and y==58):
+        y +=4
+        ash_front_steht.place(x=x,y=y)
+    elif(x>=108 and x<=140 and y==126 or x>=112 and y==74):
+        y +=4
+        ash_front_steht.place(x=x,y=y)
+    
+
 def ashmoveleft(event):
     global leftlinksrechts,backlinksrechts,leftlinksrechts,rightlinksrechts,x,y
     leftlinksrechts+=1
     backlinksrechts=0
     frontlinksrechts=0
     rightlinksrechts=0
+    print(x,y)
     if(leftlinksrechts==1):
         x -=4
         ash_front_steht.configure(image=ashleftsteht)
@@ -224,15 +241,21 @@ def ashmoveleft(event):
         ash_front_steht.configure(image=ashleftlinkesbein)
         ash_front_steht.place(x=x,y=y)
         leftlinksrechts=0
-    if(x==0):
+    if(x==-4):
         x +=4
-        ash_front_steht.place(y=y)
+        ash_front_steht.place(y=y,x=x)
+    if(x==12 and y>=110 or x==76 and y<=58):
+        x +=4
+        ash_front_steht.place(x=x,y=y)
+        
+                
 def ashmoveright(event):
     global rightlinksrechts,backlinksrechts,leftlinksrechts,rightlinksrechts,x,y
     rightlinksrechts+=1
     backlinksrechts=0
     leftlinksrechts=0
     frontlinksrechts=0
+    print(x,y)
     if(rightlinksrechts==1):
         x +=4
         ash_front_steht.configure(image=ashrightsteht)
@@ -250,9 +273,12 @@ def ashmoveright(event):
         ash_front_steht.configure(image=ashrightlinkesbein)
         ash_front_steht.place(x=x,y=y)
         rightlinksrechts=0
-    if(x==140):
+    if(x==144):
         x -=4
-        ash_front_steht.place(y=y)
+        ash_front_steht.place(y=y,x=x)
+    elif(x>=108 and y>=102 and y<=126 or x>=108 and y==134 or x>=112 and y>=50 and y<=74 or x==136 and y==46):
+        x-=4
+        ash_front_steht.place(x=x,y=y)
 
 def eichpluspokemon():
     global eicherzähltpokemon
