@@ -135,7 +135,7 @@ def firstspawn():
     main.configure(bg="black")
     karte=tkinter.Canvas(main,width=157,height=157)
     karte.create_image(80,80,image=herohouseup)
-    ash_front_steht=Label(karte,image=ashfrontsteht)
+    ash_front_steht=Label(karte,image=ashfrontsteht,text="sdfh",font=("Arial",20))
     karte.focus_set()
     karte.place(x=380,y=260)
     if(geschlecht=="Junge"):
