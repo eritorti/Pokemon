@@ -164,7 +164,7 @@ def ashbewegung():
         main.bind("<Key-Left>",ashmoveleft)
 
 def ashmovefront(event):
-    global frontlinksrechts,backlinksrechts,leftlinksrechts,rightlinksrechts,x,y,Map,ashguckrichtung,aktion,Ash,ashs
+    global frontlinksrechts,backlinksrechts,leftlinksrechts,rightlinksrechts,x,y,Map,ashguckrichtung,aktion,Ash,ashs,map
     frontlinksrechts+=1
     backlinksrechts=0
     leftlinksrechts=0
@@ -208,7 +208,7 @@ def ashmovefront(event):
 
     elif(Map=="Herohouseunten"):
         #wand
-        if(y==142):
+        if(y==146):
             y-=4
         #busch
         elif(x<=16 and y==118):
@@ -217,13 +217,13 @@ def ashmovefront(event):
         elif(x<=48 and y==50):
             y-=4
         #tisch
-        elif(x<=60 and x>=20 and y==98):
+        elif(x<=60 and x>=28 and y==98):
             y-=4
 
 
 
 def ashmoveback(event):
-    global backlinksrechts,leftlinksrechts,rightlinksrechts,frontlinksrechts,x,y,Map,ashguckrichtung,aktion,Ash,ashs
+    global backlinksrechts,leftlinksrechts,rightlinksrechts,frontlinksrechts,x,y,Map,ashguckrichtung,aktion,Ash,ashs,map
     backlinksrechts+=1
     frontlinksrechts=0
     leftlinksrechts=0
@@ -290,9 +290,9 @@ def ashmoveback(event):
 def fernseher(event):
     print(aktion)
     
-
+#86,51
 def ashmoveleft(event):
-    global leftlinksrechts,backlinksrechts,rightlinksrechts,frontlinksrechts,x,y,Map,ashguckrichtung,Ash,ashs
+    global leftlinksrechts,backlinksrechts,rightlinksrechts,frontlinksrechts,x,y,Map,ashguckrichtung,Ash,ashs,map
 
     leftlinksrechts+=1
     backlinksrechts=0
@@ -320,13 +320,13 @@ def ashmoveleft(event):
         leftlinksrechts=2
     if(Map=="Herohouseoben"):
         #wand
-        if(x==10):
+        if(x<=10):
             x +=4
         #pflanze
         elif(y>=123 and x<=22):
             x+=4
         #wii
-        elif(x==82 and y<=59):
+        elif(x<=82 and y<=59):
             x+=4
     elif(Map=="Herohouseunten"):
         #wand
@@ -345,7 +345,7 @@ def ashmoveleft(event):
         elif(y<=42 and x==36):
             x+=4
         #busch
-        elif(y>=110 and x==12):
+        elif(y>=122 and x==20):
             x+=4
         #treppe
         elif(y>=42 and y<=50 and x==144):
@@ -358,9 +358,13 @@ def ashmoveleft(event):
             main.bind("<Key-Left>",cpass);time.sleep(0.5)
             karte.delete("map")
             Map="Herohouseoben"
-            x==126
+            x==123
             y=51
             karte.create_image(80,80,image=herohouseup,tags="map")
+            fontlinksrechts=0
+            leftlinksrechts=0
+            rightlinksrechts=0
+            backlinksrechts=0
             main.bind("<Key-Down>",ashmovefront)
             main.bind("<Key-Up>",ashmoveback)
             main.bind("<Key-Right>",ashmoveright)
@@ -369,7 +373,7 @@ def ashmoveleft(event):
                 
 
 def ashmoveright(event):
-    global rightlinksrechts,backlinksrechts,leftlinksrechts,frontlinksrechts,x,y,Map,karte,ashguckrichtung,Ash,ashs
+    global rightlinksrechts,backlinksrechts,leftlinksrechts,frontlinksrechts,x,y,Map,karte,ashguckrichtung,Ash,ashs,map
     rightlinksrechts+=1
     backlinksrechts=0
     leftlinksrechts=0
@@ -396,7 +400,7 @@ def ashmoveright(event):
         rightlinksrechts=2
     if(Map=="Herohouseoben"):
         #wand
-        if(x==150):
+        if(x>=150):
             x -=4
         #bett untere kante
         elif(x==118 and y==147):
@@ -414,6 +418,10 @@ def ashmoveright(event):
             main.bind("<Key-Right>",cpass)
             main.bind("<Key-Left>",cpass);time.sleep(0.5)
             karte.delete("map")
+            fontlinksrechts=0
+            leftlinksrechts=0
+            rightlinksrechts=0
+            backlinksrechts=0
             main.bind("<Key-Down>",ashmovefront)
             main.bind("<Key-Up>",ashmoveback)
             main.bind("<Key-Right>",ashmoveright)
@@ -429,13 +437,13 @@ def ashmoveright(event):
         if(x==152):
             x -=4
         #kühlschrank
-        elif(y>=26 and y<=42 and x==48):
+        elif(y>=26 and y<=42 and x==60):
             x-=4
         #treppenwand
         elif(y>=40 and y<=74 and x==72):
             x-=4
         #tisch
-        elif(x==20 and y>=86 and y<=134):
+        elif(x==28 and y>=86 and y<=134):
             x-=4
     elif(Map=="Herohouseunten"):
         if(x==144):
