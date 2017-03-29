@@ -2,11 +2,12 @@ from tkinter import ttk
 from tkinter import *
 import tkinter
 import time
+from PIL import Image ,ImageTk
+from tkinter import Tk,Label
 
 main=tkinter.Tk()
 main.geometry("1000x800")
 main.resizable(width=False,height=False)
-
 
 mainfarbe=PhotoImage(file="main.gif")
 fotoeich=PhotoImage(file="Eich.gif")
@@ -20,23 +21,25 @@ schiggypic=PhotoImage(file="schiggy.gif")
 glumandapic=PhotoImage(file="glumanda.gif")
 bisasampic=PhotoImage(file="bisasam.gif")
 ##############################################################################################
-ashfrontlinkesbein=PhotoImage(file="ash_front_linkes_bein.gif")
-ashfrontrechtesbein=PhotoImage(file="ash_front_rechtes_bein.gif")
-ashfrontsteht=PhotoImage(file="ash_front_stand.gif")
-ashbacksteht=PhotoImage(file="ash_back_stand.gif")
-ashbacklinkesbein=PhotoImage(file="ash_back_linkes_bein.gif")
-ashbackrechtesbein=PhotoImage(file="ash_back_rechtes_bein.gif")
-ashleftsteht=PhotoImage(file="ash_left_stand.gif")
-ashleftlinkesbein=PhotoImage(file="ash_left_linkes_bein.gif")
-ashleftrechtesbein=PhotoImage(file="ash_left_rechtes_bein.gif")
-ashrightsteht=PhotoImage(file="ash_right_stand.gif")
-ashrightlinkesbein=PhotoImage(file="ash_right_linkes_bein.gif")
-ashrightrechtesbein=PhotoImage(file="ash_right_rechtes_bein.gif")
+ashfrontlinkesbein=PhotoImage(file="ash_front_linkes_bein.png")
+ashfrontrechtesbein=PhotoImage(file="ash_front_rechtes_bein.png")
+ashfrontsteht=ImageTk.PhotoImage(file="ash_front_stand.png")
+ashbacksteht=PhotoImage(file="ash_back_stand.png")
+ashbacklinkesbein=PhotoImage(file="ash_back_linkes_bein.png")
+ashbackrechtesbein=PhotoImage(file="ash_back_rechtes_bein.png")
+ashleftsteht=PhotoImage(file="ash_left_stand.png")
+ashleftlinkesbein=PhotoImage(file="ash_left_linkes_bein.png")
+ashleftrechtesbein=PhotoImage(file="ash_left_rechtes_bein.png")
+ashrightsteht=PhotoImage(file="ash_right_stand.png")
+ashrightlinkesbein=PhotoImage(file="ash_right_linkes_bein.png")
+ashrightrechtesbein=PhotoImage(file="ash_right_rechtes_bein.png")
 #############################################################################################
-herohouseup=PhotoImage(file="herohouseoben.gif")
-herohousedown=PhotoImage(file="herohouseunten.gif")
+herohouseup=ImageTk.PhotoImage(file="herohouseoben.png")
+herohousedown=ImageTk.PhotoImage(file="herohouseunten.png")
 schwarz=PhotoImage(file="schwarz.gif")
+aktionblase=ImageTk.PhotoImage(file="aktionsblase.gif")
 
+aktion=None
 Map=None
 geschlecht=None
 v=StringVar()
@@ -53,6 +56,7 @@ zählercounter=1
 zählercounterpokemon=1
 klickfürweiter=Label(main,text="Klick irgendwo hin für weiter!",fg="gray75",font=("Arial",25))
 klickfürweiter2=Label(main,text="Klick irgendwo hin für weiter!",fg="gray75",font=("Arial",25))
+
 
 def menü():
     global lgamename,bstart,bverlassen
@@ -146,9 +150,9 @@ def firstspawn():
     ashguckrichtung="unten"
     main.bind("<Button-1>",cpass)
     main.configure(bg="black")
-#    karte.create_image(80,80,image=herohouseup)
-    ash_front_steht=Label(karte,image=ashfrontsteht)
-    karte.focus_set()
+    ash_front_steht.place(x=200,y=200)
+#    karte.focus_set()
+
     karte.place(x=380,y=260)
     herohouseoben()
     if(geschlecht=="Junge"):
@@ -165,8 +169,7 @@ def ashbewegung():
         main.bind("<Key-Left>",ashmoveleft)
 
 def ashmovefront(event):
-    global frontlinksrechts,backlinksrechts,leftlinksrechts,rightlinksrechts,x,y,Map
-    global frontlinksrechts,backlinksrechts,leftlinksrechts,rightlinksrechts,x,y,Map,ashguckrichtung
+    global frontlinksrechts,backlinksrechts,leftlinksrechts,rightlinksrechts,x,y,Map,ashguckrichtung,aktion
     frontlinksrechts+=1
     backlinksrechts=0
     leftlinksrechts=0
@@ -219,7 +222,7 @@ def ashmovefront(event):
 
 
 def ashmoveback(event):
-    global backlinksrechts,leftlinksrechts,rightlinksrechts,frontlinksrechts,x,y,Map,ashguckrichtung
+    global backlinksrechts,leftlinksrechts,rightlinksrechts,frontlinksrechts,x,y,Map,ashguckrichtung,aktion
     backlinksrechts+=1
     frontlinksrechts=0
     leftlinksrechts=0
@@ -228,6 +231,7 @@ def ashmoveback(event):
     print(x,y)
     ash_front_steht.configure(image=ashbacksteht)
     ash_front_steht.place(x=x,y=y)
+    aktion=None
     if(backlinksrechts==2):
         y -=4
         ash_front_steht.configure(image=ashbackrechtesbein)
@@ -271,6 +275,7 @@ def ashmoveback(event):
             ash_front_steht.place(x=x,y=y)
         #fernseher
         elif(x>=64 and x<=108 and y==74):
+            aktion="fernseher"
             y+=4
             ash_front_steht.place(x=x,y=y)
         #bar
@@ -285,7 +290,11 @@ def ashmoveback(event):
         elif(x<=28 and y==34):
             y+=4
             ash_front_steht.place(x=x,y=y)
-
+        if(aktion=="fernseher"):
+            main.bind("<Key-k>",fernseher)
+def fernseher(event):
+    print(aktion)
+    
 
 def ashmoveleft(event):
     global leftlinksrechts,backlinksrechts,rightlinksrechts,frontlinksrechts,x,y,Map,ashguckrichtung
