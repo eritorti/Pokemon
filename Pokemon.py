@@ -2,8 +2,7 @@ from tkinter import ttk
 from tkinter import *
 import tkinter
 import time
-from PIL import Image ,ImageTk
-from tkinter import Tk,Label
+
 
 main=tkinter.Tk()
 main.geometry("1000x800")
@@ -23,7 +22,7 @@ bisasampic=PhotoImage(file="bisasam.gif")
 ##############################################################################################
 ashfrontlinkesbein=PhotoImage(file="ash_front_linkes_bein.png")
 ashfrontrechtesbein=PhotoImage(file="ash_front_rechtes_bein.png")
-ashfrontsteht=ImageTk.PhotoImage(file="ash_front_stand.png")
+ashfrontsteht=PhotoImage(file="ash_front_stand.png")
 ashbacksteht=PhotoImage(file="ash_back_stand.png")
 ashbacklinkesbein=PhotoImage(file="ash_back_linkes_bein.png")
 ashbackrechtesbein=PhotoImage(file="ash_back_rechtes_bein.png")
@@ -34,10 +33,10 @@ ashrightsteht=PhotoImage(file="ash_right_stand.png")
 ashrightlinkesbein=PhotoImage(file="ash_right_linkes_bein.png")
 ashrightrechtesbein=PhotoImage(file="ash_right_rechtes_bein.png")
 #############################################################################################
-herohouseup=ImageTk.PhotoImage(file="herohouseoben.png")
-herohousedown=ImageTk.PhotoImage(file="herohouseunten.png")
+herohouseup=PhotoImage(file="herohouseoben.png")
+herohousedown=PhotoImage(file="herohouseunten.png")
 schwarz=PhotoImage(file="schwarz.gif")
-aktionblase=ImageTk.PhotoImage(file="aktionsblase.gif")
+aktionblase=PhotoImage(file="aktionsblase.gif")
 
 aktion=None
 Map=None
@@ -56,7 +55,7 @@ zählercounter=1
 zählercounterpokemon=1
 klickfürweiter=Label(main,text="Klick irgendwo hin für weiter!",fg="gray75",font=("Arial",25))
 klickfürweiter2=Label(main,text="Klick irgendwo hin für weiter!",fg="gray75",font=("Arial",25))
-
+ashs=0
 
 def menü():
     global lgamename,bstart,bverlassen
@@ -139,25 +138,21 @@ def firstspawn():
     backlinksrechts=0
     leftlinksrechts=0
     rightlinksrechts=0
-    x=128
-    y=130
+    y=135
+    x=160
     Map="Herohouseoben"
     main.bind("<Button-1>",cpass)
     main.configure(bg="black")
     karte=tkinter.Canvas(main,width=158,height=158,bg="black")
-    karte.create_image(80,80,image=herohouseup)
-    ash_front_steht=Label(karte,image=ashfrontsteht)
+    karte.create_image(79,79,image=herohouseup,tags="map")
+    karte.create_image(y,x,image=ashfrontsteht,tags="Ash")
     ashguckrichtung="unten"
     main.bind("<Button-1>",cpass)
     main.configure(bg="black")
-    ash_front_steht.place(x=200,y=200)
-#    karte.focus_set()
-
-    karte.place(x=380,y=260)
+    karte.place(x=0,y=0)
     herohouseoben()
     if(geschlecht=="Junge"):
         ashbewegung()
-        ash_front_steht.place(x=x,y=y)
         
 def ashbewegung():
     global ashmovecounter
@@ -169,127 +164,113 @@ def ashbewegung():
         main.bind("<Key-Left>",ashmoveleft)
 
 def ashmovefront(event):
-    global frontlinksrechts,backlinksrechts,leftlinksrechts,rightlinksrechts,x,y,Map,ashguckrichtung,aktion
+    global frontlinksrechts,backlinksrechts,leftlinksrechts,rightlinksrechts,x,y,Map,ashguckrichtung,aktion,Ash,ashs
     frontlinksrechts+=1
     backlinksrechts=0
     leftlinksrechts=0
     rightlinksrechts=0
     ashguckrichtung="unten"
     print(x,y)
-    ash_front_steht.configure(image=ashfrontsteht)
-    ash_front_steht.place(x=x,y=y)
-    if(frontlinksrechts==2):
+    aktion=None
+    ashs+=1
+    if(frontlinksrechts==0):
+        karte.delete("Ash")
+        karte.create_image(x,y,image=ashfrontsteht,tags="Ash")
+    elif(frontlinksrechts==2):
+        karte.delete("Ash")
         y +=4
-        ash_front_steht.configure(image=ashfrontrechtesbein)
-        ash_front_steht.place(x=x,y=y)
+        karte.create_image(x,y,image=ashfrontrechtesbein,tags="Ash")
     elif(frontlinksrechts==4):
+        karte.delete("Ash")
         y +=4
-        ash_front_steht.configure(image=ashfrontsteht)
-        ash_front_steht.place(x=x,y=y)
+        karte.create_image(x,y,image=ashfrontsteht,tags="Ash")
     elif(frontlinksrechts==5):
+        karte.delete("Ash")
         y +=4
-        ash_front_steht.configure(image=ashfrontlinkesbein)
-        ash_front_steht.place(x=x,y=y)
-        frontlinksrechts=0
+        karte.create_image(x,y,image=ashfrontlinkesbein,tags="Ash")
+        frontlinksrechts=1
     if(Map=="Herohouseoben"):
         if(y==138):
             y -=4
-            ash_front_steht.place(y=y)
         elif(x<=15 and y>=110):        
             y -=4
-            ash_front_steht.place(y=y,x=x)
         elif(x>=108 and x<=140 and y==134 or x>=108 and x<=140 and y==102 or x>=112 and y==50):
             y -=4
-            ash_front_steht.place(x=x,y=y)
     elif(Map=="Herohouseunten"):
         #wand
         if(y==142):
             y-=4
-            ash_front_steht.place(x=x,y=y)
         #busch
         elif(x<=12 and y==110):
             y-=4
-            ash_front_steht.place(x=x,y=y)
         #bar
         elif(x<=40 and y==42):
             y-=4
-            ash_front_steht.place(x=x,y=y)
         #tisch
         elif(x<=60 and x>=20 and y==90):
             y-=4
-            ash_front_steht.place(x=x,y=y)
 
 
 
 def ashmoveback(event):
-    global backlinksrechts,leftlinksrechts,rightlinksrechts,frontlinksrechts,x,y,Map,ashguckrichtung,aktion
+    global backlinksrechts,leftlinksrechts,rightlinksrechts,frontlinksrechts,x,y,Map,ashguckrichtung,aktion,Ash,ashs
     backlinksrechts+=1
     frontlinksrechts=0
     leftlinksrechts=0
     rightlinksrechts=0
     ashguckrichtung="hinten"
     print(x,y)
-    ash_front_steht.configure(image=ashbacksteht)
-    ash_front_steht.place(x=x,y=y)
+    ashs+=1
     aktion=None
-    if(backlinksrechts==2):
+    if(backlinksrechts==0):
+        karte.delete("Ash")
+        karte.create_image(x,y,image=ashbacksteht,tags="Ash")
+    elif(backlinksrechts==2):
+        karte.delete("Ash")
         y -=4
-        ash_front_steht.configure(image=ashbackrechtesbein)
-        ash_front_steht.place(x=x,y=y)
+        karte.create_image(x,y,image=ashbackrechtesbein,tags="Ash")
     elif(backlinksrechts==4):
+        karte.delete("Ash")
         y -=4
-        ash_front_steht.configure(image=ashbacksteht)
-        ash_front_steht.place(x=x,y=y)
+        karte.create_image(x,y,image=ashbacksteht,tags="Ash")
     elif(backlinksrechts==5):
+        karte.delete("Ash")
         y -=4
-        ash_front_steht.configure(image=ashbacklinkesbein)
-        ash_front_steht.place(x=x,y=y)
-        backlinksrechts=0
+        karte.create_image(x,y,image=ashbacklinkesbein,tags="Ash")
+        backlinksrechts=1
     if(Map=="Herohouseoben"):
         if(y==42):
             y +=4
-            ash_front_steht.place(y=y,x=x)
         elif(x<=76 and y==58):
             y +=4
-            ash_front_steht.place(x=x,y=y)
-
         elif(x<=76 and y==58):
             y +=4
-            ash_front_steht.place(x=x,y=y)
         elif(x>=108 and x<=140 and y==126 or x>=112 and y==74):
             y +=4
-            ash_front_steht.place(x=x,y=y)
     elif(Map=="Herohouseunten"):
 
         #wand
         if(y==26):
             y +=4
-            ash_front_steht.place(x=x,y=y)
         #treppe
         elif(x<=140 and x>=88 and y==50):
             y +=4
-            ash_front_steht.place(x=x,y=y)
         #kühlschrank
         elif(x<=68 and x>=48 and y==42):
             y+=4
-            ash_front_steht.place(x=x,y=y)
         #fernseher
         elif(x>=64 and x<=108 and y==74):
             aktion="fernseher"
             y+=4
-            ash_front_steht.place(x=x,y=y)
         #bar
         elif(x<=40 and y==78):
             y+=4
-            ash_front_steht.place(x=x,y=y)
         #tisch
         elif(x<=60 and x>=20 and y==134):
             y+=4
-            ash_front_steht.place(x=x,y=y)
         #spüle
         elif(x<=28 and y==34):
             y+=4
-            ash_front_steht.place(x=x,y=y)
         if(aktion=="fernseher"):
             main.bind("<Key-k>",fernseher)
 def fernseher(event):
@@ -297,7 +278,7 @@ def fernseher(event):
     
 
 def ashmoveleft(event):
-    global leftlinksrechts,backlinksrechts,rightlinksrechts,frontlinksrechts,x,y,Map,ashguckrichtung
+    global leftlinksrechts,backlinksrechts,rightlinksrechts,frontlinksrechts,x,y,Map,ashguckrichtung,Ash,ashs
 
     leftlinksrechts+=1
     backlinksrechts=0
@@ -305,69 +286,62 @@ def ashmoveleft(event):
     rightlinksrechts=0
     ashguckrichtung="links"
     print(x,y)
-    ash_front_steht.configure(image=ashleftsteht)
-    ash_front_steht.place(x=x,y=y)
-
-    if(leftlinksrechts==2):
+    ashs+=1
+    aktion=None
+    if(leftlinksrechts==0):
+        karte.delete("Ash")
+        karte.create_image(x,y,image=ashleftsteht,tags="Ash")
+    elif(leftlinksrechts==3):
+        karte.delete("Ash")
         x -=4
-        ash_front_steht.configure(image=ashleftrechtesbein)
-        ash_front_steht.place(x=x,y=y)
-    elif(leftlinksrechts==4):
-        x -=4
-        ash_front_steht.configure(image=ashleftsteht)
-        ash_front_steht.place(x=x,y=y)
+        karte.create_image(x,y,image=ashleftrechtesbein,tags="Ash")
     elif(leftlinksrechts==5):
+        karte.delete("Ash")
         x -=4
-        ash_front_steht.configure(image=ashleftlinkesbein)
-        ash_front_steht.place(x=x,y=y)
-        leftlinksrechts=0
+        karte.create_image(x,y,image=ashleftsteht,tags="Ash")
+    elif(leftlinksrechts==7):
+        karte.delete("Ash")
+        x -=4
+        karte.create_image(x,y,image=ashleftlinkesbein,tags="Ash")
+        leftlinksrechts=1
     if(Map=="Herohouseoben"):        
-        if(x==-4):
+        if(x==12):
             x +=4
-            ash_front_steht.place(y=y,x=x)
         if(x==12 and y>=110 or x==76 and y<=58):
             x +=4
-            ash_front_steht.place(x=x,y=y)
     elif(Map=="Herohouseunten"):
         #wand
         if(x==-4):
             x +=4
-            ash_front_steht.place(x=x,y=y)
         #treppenwand
         elif(x==108 and y>=46 and y<=74):
             x+=4
-            ash_front_steht.place(x=x,y=y)
         #tisch
         elif(x==60 and y>=90 and y<=134):
             x+=4
-            ash_front_steht.place(x=x,y=y)
         #bar
         elif(x==40 and y>=42 and y<=74):
             x+=4
-            ash_front_steht.place(x=x,y=y)
         #spüle
         elif(y>=26 and y<=34 and x==28):
             x+=4
-            ash_front_steht.place(x=x,y=y)
         #busch
         elif(y>=110 and x==12):
             x+=4
-            ash_front_steht.place(x=x,y=y)
         #treppe
         elif(y>=34 and y<=50 and x==140):
             x+=4
-            ash_front_steht.place(x=x,y=y)
         elif(x<=136 and x>=120 and y==30):
             main.bind("<Key-Down>",cpass)
             main.bind("<Key-Up>",cpass)
             main.bind("<Key-Right>",cpass)
             main.bind("<Key-Left>",cpass)
-            karte.create_image(88,81,image=schwarz);time.sleep(0.5)
+            karte.create_image(88,81,image=schwarz,tags="map");time.sleep(0.5)
             Map="Herohouseoben"
             x==104
             y=46
-            ash_front_steht.place(x=x,y=y)
-            karte.create_image(80,80,image=herohouseup)
+            #ash_front_steht.place(x=x,y=y)
+            karte.create_image(80,80,image=herohouseup,tags="map")
             main.bind("<Key-Down>",ashmovefront)
             main.bind("<Key-Up>",ashmoveback)
             main.bind("<Key-Right>",ashmoveright)
@@ -376,41 +350,42 @@ def ashmoveleft(event):
                 
 
 def ashmoveright(event):
-    global rightlinksrechts,backlinksrechts,leftlinksrechts,frontlinksrechts,x,y,Map,karte,ashguckrichtung
+    global rightlinksrechts,backlinksrechts,leftlinksrechts,frontlinksrechts,x,y,Map,karte,ashguckrichtung,Ash,ashs
     rightlinksrechts+=1
     backlinksrechts=0
     leftlinksrechts=0
     frontlinksrechts=0
     ashguckrichtung="rechts"
     print(x,y)
-    ash_front_steht.configure(image=ashrightsteht)
-    ash_front_steht.place(x=x,y=y)
-    if(rightlinksrechts==2):
+    aktion=None
+    ashs+=1
+    if(rightlinksrechts==0):
+        karte.delete("Ash")
+        karte.create_image(x,y,image=ashrightsteht,tags="Ash")
+    if(rightlinksrechts==3):
+        karte.delete("Ash")
         x +=4
-        ash_front_steht.configure(image=ashrightrechtesbein)
-        ash_front_steht.place(x=x,y=y)
+        karte.create_image(x,y,image=ashrightrechtesbein,tags="Ash")
     elif(rightlinksrechts==4):
+        karte.delete("Ash")
         x +=4
-        ash_front_steht.configure(image=ashrightsteht)
-        ash_front_steht.place(x=x,y=y)
+        karte.create_image(x,y,image=ashrightsteht,tags="Ash")
     elif(rightlinksrechts==5):
+        karte.delete("Ash")
         x +=4
-        ash_front_steht.configure(image=ashrightlinkesbein)
-        ash_front_steht.place(x=x,y=y)
-        rightlinksrechts=0
+        karte.create_image(x,y,image=ashrightlinkesbein,tags="Ash")
+        rightlinksrechts=1
     if(Map=="Herohouseoben"):        
         if(x==144):
             x -=4
-            ash_front_steht.place(y=y,x=x)
         elif(x>=108 and y>=102 and y<=126 or x>=108 and y==134 or x>=112 and y>=50 and y<=74):
             x-=4
-            ash_front_steht.place(x=x,y=y)
         elif(x==136 and y==46):
             main.bind("<Key-Down>",cpass)
             main.bind("<Key-Up>",cpass)
             main.bind("<Key-Right>",cpass)
             main.bind("<Key-Left>",cpass)
-            karte.create_image(88,81,image=schwarz);time.sleep(0.5)
+            karte.create_image(88,81,image=schwarz,tags="map");time.sleep(0.5)
             main.bind("<Key-Down>",ashmovefront)
             main.bind("<Key-Up>",ashmoveback)
             main.bind("<Key-Right>",ashmoveright)
@@ -418,36 +393,29 @@ def ashmoveright(event):
             Map="Herohouseunten"
             x=144
             y=30
-            ash_front_steht.place(x=x,y=y)
-            karte.create_image(88,81,image=herohousedown)
+            karte.create_image(88,81,image=herohousedown,tags="map")
 
 
     elif(Map=="Herohouseunten"):
         #wand
         if(x==148):
             x -=4
-            ash_front_steht.place(x=x,y=y)
         #kühlschrank
         elif(y>=26 and y<=42 and x==48):
             x-=4
-            ash_front_steht.place(x=x,y=y)
         #treppenwand
         elif(y>=40 and y<=74 and x==64):
             x-=4
-            ash_front_steht.place(x=x,y=y)
         #tisch
         elif(x==20 and y>=86 and y<=134):
+            karte.delete("map")
             x-=4
-            ash_front_steht.place(x=x,y=y)
-            karte.configure(image=herohousedown)
-            ash_front_steht.place(x=x,y=y)
+            karte.create_image(image=herohousedown,tags="map")
     elif(Map=="Herohouseunten"):
         if(x==144):
             x -=4
-            ash_front_steht.place(y=y,x=x)
         elif(x==64 and y<=74 and y>=22):
             x -=4
-            ash_front_steht.place(x=x,y=y)
 def ashmovepass(event):
     pass
             
