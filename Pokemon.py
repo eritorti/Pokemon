@@ -270,11 +270,11 @@ def ashmoveback(event):
         elif(x<=144 and x>=88 and y==50):
             y +=4
         #kühlschrank
-        elif(x<=68 and x>=56 and y==42):
+        elif(x<=72 and x>=60 and y==42):
             y+=4
         #fernseher
-        elif(x>=64 and x<=108 and y==74):
-            aktion="fernseher"
+        elif(x>=76 and x<=108 and y==74):
+            aktion="f72ernseher"
             y+=4
         #bar
         elif(x<=48 and y==78):
@@ -283,7 +283,7 @@ def ashmoveback(event):
         elif(x<=60 and x>=28 and y==134):
             y+=4
         #spüle
-        elif(x<=28 and y==42):
+        elif(x<=32 and y==42):
             y+=4
         if(aktion=="fernseher"):
             main.bind("<Key-k>",fernseher)
@@ -330,7 +330,7 @@ def ashmoveleft(event):
             x+=4
     elif(Map=="Herohouseunten"):
         #wand
-        if(x==-4):
+        if(x==8):
             x +=4
         #treppenwand
         elif(x==112 and y>=46 and y<=70):
@@ -339,10 +339,10 @@ def ashmoveleft(event):
         elif(x==68 and y>=102 and y<=134):
             x+=4
         #bar
-        elif(x==48 and y>=42 and y<=74):
+        elif(x==48 and y>=54 and y<=74):
             x+=4
         #spüle
-        elif(y<=26 and x==28):
+        elif(y<=42 and x==36):
             x+=4
         #busch
         elif(y>=110 and x==12):
@@ -405,10 +405,10 @@ def ashmoveright(event):
         elif(x==118 and y>=115 and y<=127):
             x-=4
         #treppe
-        elif(x==122 and y<=75 and y>=59):
+        elif(x==122 and y<=75 and y>=63):
             x-=4
         
-        elif(x>=134 and y<=55):
+        elif(x>=134 and y<=59):
             main.bind("<Key-Down>",cpass)
             main.bind("<Key-Up>",cpass)
             main.bind("<Key-Right>",cpass)
@@ -432,7 +432,7 @@ def ashmoveright(event):
         elif(y>=26 and y<=42 and x==48):
             x-=4
         #treppenwand
-        elif(y>=40 and y<=74 and x==64):
+        elif(y>=40 and y<=74 and x==72):
             x-=4
         #tisch
         elif(x==20 and y>=86 and y<=134):
