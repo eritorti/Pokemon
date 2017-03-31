@@ -2,6 +2,7 @@ from tkinter import ttk
 from tkinter import *
 import tkinter
 import time
+import random
 
 
 main=tkinter.Tk()
@@ -36,9 +37,9 @@ ashrightrechtesbein=PhotoImage(file="ash_right_rechtes_bein.png")
 herohouseup=PhotoImage(file="herohouseoben.png")
 herohousedown=PhotoImage(file="herohouseunten.png")
 schwarz=PhotoImage(file="schwarz.gif")
-aktionblase=PhotoImage(file="aktionsblase.gif")
+aktionblase=PhotoImage(file="aktionsblase.png")
 
-aktion=None
+sprechen=None
 Map=None
 geschlecht=None
 v=StringVar()
@@ -56,6 +57,7 @@ zählercounterpokemon=1
 klickfürweiter=Label(main,text="Klick irgendwo hin für weiter!",fg="gray75",font=("Arial",25))
 klickfürweiter2=Label(main,text="Klick irgendwo hin für weiter!",fg="gray75",font=("Arial",25))
 ashs=0
+fern=0
 
 def menü():
     global lgamename,bstart,bverlassen
@@ -164,7 +166,7 @@ def ashbewegung():
         main.bind("<Key-Left>",ashmoveleft)
 
 def ashmovefront(event):
-    global frontlinksrechts,backlinksrechts,leftlinksrechts,rightlinksrechts,x,y,Map,ashguckrichtung,aktion,Ash,ashs,map
+    global frontlinksrechts,backlinksrechts,leftlinksrechts,rightlinksrechts,x,y,Map,ashguckrichtung,sprechen,Ash,ashs,map,fern
     frontlinksrechts+=1
     backlinksrechts=0
     leftlinksrechts=0
@@ -219,11 +221,16 @@ def ashmovefront(event):
         #tisch
         elif(x<=60 and x>=28 and y==98):
             y-=4
-
+        elif(ashguckrichtung!="hinten" and fern ==1):
+            try:
+                reaktion.destroy()
+            except:
+                pass
+            fern=0
 
 
 def ashmoveback(event):
-    global backlinksrechts,leftlinksrechts,rightlinksrechts,frontlinksrechts,x,y,Map,ashguckrichtung,aktion,Ash,ashs,map
+    global backlinksrechts,leftlinksrechts,rightlinksrechts,frontlinksrechts,x,y,Map,ashguckrichtung,sprechen,Ash,ashs,map,fern
     backlinksrechts+=1
     frontlinksrechts=0
     leftlinksrechts=0
@@ -274,7 +281,9 @@ def ashmoveback(event):
             y+=4
         #fernseher
         elif(x>=76 and x<=108 and y==74):
-            aktion="f72ernseher"
+            sprechen="fernseher"
+            main.bind("<Key-k>",fernseher)
+            main.bind("<Key-K>",fernseher)
             y+=4
         #bar
         elif(x<=48 and y==78):
@@ -285,14 +294,34 @@ def ashmoveback(event):
         #spüle
         elif(x<=32 and y==42):
             y+=4
-        if(aktion=="fernseher"):
-            main.bind("<Key-k>",fernseher)
+        elif(ashguckrichtung!="hinten" and fern==1):
+            try:
+                reaktion.destroy()
+            except:
+                pass
+            fern=0
 def fernseher(event):
-    print(aktion)
+    global reaktion,fern
+    fern+=1
+    try:
+        reaktion.destroy()
+    except:
+        pass
+    reaktion=Label(main,image=aktionblase,text="",font=("Arial",10), compound =CENTER)
+    reaktion.place(x=388,y=370)
+    fernsehshow()
+
+def fernsehshow():
+    global ashguckrichtung
+    sendungen=["Professor Eich","Item des tages","Besondere Pokemon","Legendäre Pokemon"]
+    reaktion.configure(text=sendungen[random.randint(0,3)])
+    if(ashguckrichtung!="hinten"):
+        print("hi")
+        reaktion.destroy()
     
-#86,51
+
 def ashmoveleft(event):
-    global leftlinksrechts,backlinksrechts,rightlinksrechts,frontlinksrechts,x,y,Map,ashguckrichtung,Ash,ashs,map
+    global leftlinksrechts,backlinksrechts,rightlinksrechts,frontlinksrechts,x,y,Map,ashguckrichtung,Ash,ashs,map,sprechen,fern
 
     leftlinksrechts+=1
     backlinksrechts=0
@@ -350,7 +379,12 @@ def ashmoveleft(event):
         #treppe
         elif(y>=42 and y<=50 and x==144):
             x+=4
-
+        elif(ashguckrichtung!="hinten" and fern==1):
+            try:
+                reaktion.destroy()
+            except:
+                pass
+            fern=0
         elif(x<=136 and x>=120 and y<=38):
             main.bind("<Key-Down>",cpass)
             main.bind("<Key-Up>",cpass)
@@ -373,7 +407,7 @@ def ashmoveleft(event):
                 
 
 def ashmoveright(event):
-    global rightlinksrechts,backlinksrechts,leftlinksrechts,frontlinksrechts,x,y,Map,karte,ashguckrichtung,Ash,ashs,map
+    global rightlinksrechts,backlinksrechts,leftlinksrechts,frontlinksrechts,x,y,Map,karte,ashguckrichtung,Ash,ashs,map,sprechen,fern
     rightlinksrechts+=1
     backlinksrechts=0
     leftlinksrechts=0
@@ -411,7 +445,7 @@ def ashmoveright(event):
         #treppe
         elif(x==122 and y<=75 and y>=63):
             x-=4
-        
+     
         elif(x>=134 and y<=59):
             main.bind("<Key-Down>",cpass)
             main.bind("<Key-Up>",cpass)
@@ -450,6 +484,12 @@ def ashmoveright(event):
             x -=4
         elif(x==64 and y<=74 and y>=22):
             x -=4
+        elif(ashguckrichtung!="hinten" and fern==1):
+            try:
+                reaktion.destroy()
+            except:
+                pass
+            fern=0
 def ashmovepass(event):
     pass
             
