@@ -57,7 +57,8 @@ zählercounterpokemon=1
 klickfürweiter=Label(main,text="Klick irgendwo hin für weiter!",fg="gray75",font=("Arial",25))
 klickfürweiter2=Label(main,text="Klick irgendwo hin für weiter!",fg="gray75",font=("Arial",25))
 ashs=0
-fern=0
+fernash=0
+wiiash=0
 
 def menü():
     global lgamename,bstart,bverlassen
@@ -133,7 +134,7 @@ def herohouseoben():
     global Map
     Map="Herohouseoben"
 def firstspawn():
-    global move,karte,ash_front_steht,ashmovecounter,x,y,frontlinksrechts,backlinksrechts,leftlinksrechts,rightlinksrechts,geschlecht,Map,ashguckrichtung
+    global move,karte,ash_front_steht,ashmovecounter,x,y,frontlinksrechts,backlinksrechts,leftlinksrechts,rightlinksrechts,geschlecht,Map,ashguckrichtung,sprechlabel
     move=False
     ashmovecounter=0
     frontlinksrechts=0
@@ -149,6 +150,8 @@ def firstspawn():
     karte.create_image(80,80,image=herohouseup,tags="map")
     karte.create_image(x,y,image=ashfrontsteht,tags="Ash")
     ashguckrichtung="unten"
+    sprechlabel=Button(main,text="Aktion(K)",bg="gray",fg="black",font=("Unciala",20),state="disabled",command=buttoneventSprechen)
+    sprechlabel.place(x=550,y=500)
     main.bind("<Button-1>",cpass)
     main.configure(bg="black")
     karte.place(x=390,y=210)
@@ -166,7 +169,7 @@ def ashbewegung():
         main.bind("<Key-Left>",ashmoveleft)
 
 def ashmovefront(event):
-    global frontlinksrechts,backlinksrechts,leftlinksrechts,rightlinksrechts,x,y,Map,ashguckrichtung,sprechen,Ash,ashs,map,fern
+    global frontlinksrechts,backlinksrechts,leftlinksrechts,rightlinksrechts,x,y,Map,ashguckrichtung,sprechen,Ash,ashs,Map,fernash,reaktion,wiiash,sprechlabel
     frontlinksrechts+=1
     backlinksrechts=0
     leftlinksrechts=0
@@ -207,7 +210,16 @@ def ashmovefront(event):
         #treppe
         elif(x>=126 and y==59):
             y-=4
-
+        elif(ashguckrichtung!="hinten" and fernash==1 or ashguckrichtung!="hinten" and wiiash==1):
+            try:
+                reaktion.destroy()
+                main.bind("<Key-k>",cpass)
+                main.bind("<Key-K>",cpass)
+            except:
+                pass
+            fernash=0
+            wiiash=0
+            sprechlabel.configure(bg="gray",state="disabled")
     elif(Map=="Herohouseunten"):
         #wand
         if(y==146):
@@ -221,16 +233,18 @@ def ashmovefront(event):
         #tisch
         elif(x<=60 and x>=28 and y==98):
             y-=4
-        elif(ashguckrichtung!="hinten" and fern ==1):
+        elif(ashguckrichtung!="hinten" and fernash ==1):
             try:
                 reaktion.destroy()
+                main.bind("<Key-k>",cpass)
+                main.bind("<Key-K>",cpass)
             except:
                 pass
-            fern=0
-
+            fernash=0
+            sprechlabel.configure(bg="gray",state="disabled")
 
 def ashmoveback(event):
-    global backlinksrechts,leftlinksrechts,rightlinksrechts,frontlinksrechts,x,y,Map,ashguckrichtung,sprechen,Ash,ashs,map,fern
+    global backlinksrechts,leftlinksrechts,rightlinksrechts,frontlinksrechts,x,y,Map,ashguckrichtung,sprechen,Ash,ashs,map,fernash,reaktion,wiiash,sprechlabel
     backlinksrechts+=1
     frontlinksrechts=0
     leftlinksrechts=0
@@ -262,12 +276,34 @@ def ashmoveback(event):
          #fernseher schreibtisch und wii
         elif(y==63 and x<=82):
             y +=4
+            if(x>=36 and x<=60 and y<=71):
+                sprechen="fernseher"
+                main.bind("<Key-k>",eventSprechen)
+                main.bind("<Key-K>",eventSprechen)
+                fernash=1
+                sprechlabel.configure(bg="dark red",state="normal",activebackground="red")
+            elif(x>=60 and x<=84 and y<=71):
+                sprechen="wiiash"
+                main.bind("<Key-k>",eventSprechen)
+                main.bind("<Key-K>",eventSprechen)
+                wiiash=1
+                sprechlabel.configure(bg="dark red",state="normal",activebackground="red")
         #treppe
         elif(x>=126 and y==75):
             y+=4
         #bett
         elif(x>=122 and x<=146 and y==131):
             y+=4
+        elif(ashguckrichtung!="hinten" and fernash==1 or ashguckrichtung!="hinten" and wiiash==1):
+            try:
+                reaktion.destroy()
+                main.bind("<Key-k>",cpass)
+                main.bind("<Key-K>",cpass)
+            except:
+                pass
+            fernash=0
+            wiiash=0
+            sprechlabel.configure(bg="gray",state="disabled")
     elif(Map=="Herohouseunten"):
 
         #wand
@@ -280,11 +316,13 @@ def ashmoveback(event):
         elif(x<=72 and x>=60 and y==42):
             y+=4
         #fernseher
-        elif(x>=76 and x<=108 and y==74):
-            sprechen="fernseher"
-            main.bind("<Key-k>",fernseher)
-            main.bind("<Key-K>",fernseher)
+        elif(x>=76 and x<=112 and y==74):
             y+=4
+            sprechen="fernseherash"
+            main.bind("<Key-k>",eventSprechen)
+            main.bind("<Key-K>",eventSprechen)
+            fernash=1
+            sprechlabel.configure(bg="dark red",state="normal",activebackground="red")
         #bar
         elif(x<=48 and y==78):
             y+=4
@@ -294,35 +332,56 @@ def ashmoveback(event):
         #spüle
         elif(x<=32 and y==42):
             y+=4
-        elif(ashguckrichtung!="hinten" and fern==1):
+        elif(ashguckrichtung!="hinten" and fernash==1):
             try:
                 reaktion.destroy()
+                main.bind("<Key-k>",cpass)
+                main.bind("<Key-K>",cpass)
             except:
                 pass
-            fern=0
-def fernseher(event):
-    global reaktion,fern
-    fern+=1
+            fernash=0
+            sprechlabel.configure(bg="gray",state="disabled")
+def eventSprechen(event):
+    global reaktion,fernash,wiiash
     try:
         reaktion.destroy()
     except:
         pass
     reaktion=Label(main,image=aktionblase,text="",font=("Arial",10), compound =CENTER)
     reaktion.place(x=388,y=370)
-    fernsehshow()
+    if(fernash==1):
+        fernsehevent()
+    elif(wiiash==1):
+        wiievent()
 
-def fernsehshow():
-    global ashguckrichtung
-    sendungen=["Professor Eich","Item des tages","Besondere Pokemon","Legendäre Pokemon"]
-    reaktion.configure(text=sendungen[random.randint(0,3)])
-    if(ashguckrichtung!="hinten"):
-        print("hi")
+def buttoneventSprechen():
+    global reaktion,fernash,wiiash
+    try:
         reaktion.destroy()
+    except:
+        pass
+    reaktion=Label(main,image=aktionblase,text="",font=("Arial",10), compound =CENTER)
+    if(fernash==1):
+        reaktion.place(x=388,y=370)
+        fernsehevent()
+    elif(wiiash==1):
+        reaktion.place(x=388,y=370)
+        wiievent()
+Items=["Sinobeere","Schutz","Drachenklaue","EP-teiler","Sonderbonbon","Para-Heiler","Aufwecker","Mondstein","",""]
+def fernsehevent():
+    global ashguckrichtung,reaktion,Items
+
+    sendungen=['Prof. Eich:,,Habt immer genug'+'\n'+'Pokèbälle mit!"','Das Item des tages'+'\n'+'ist ,,'+Items,"Besondere Pokemon","Legendäre Pokemon"]
+    reaktion.configure(text=sendungen[random.randint(0,3)])
+    sprechen=None
+def wiievent():
+    global ashguckrichtung,reaktion
+    reaktion.configure(text="Da ist kein Spiel drin...")
+    sprechen=None
     
 
 def ashmoveleft(event):
-    global leftlinksrechts,backlinksrechts,rightlinksrechts,frontlinksrechts,x,y,Map,ashguckrichtung,Ash,ashs,map,sprechen,fern
-
+    global leftlinksrechts,backlinksrechts,rightlinksrechts,frontlinksrechts,x,y,Map,ashguckrichtung,Ash,ashs,map,sprechen,fernash,reaktion,wiiash,sprechlabel
     leftlinksrechts+=1
     backlinksrechts=0
     frontlinksrechts=0
@@ -357,6 +416,16 @@ def ashmoveleft(event):
         #wii
         elif(x<=82 and y<=59):
             x+=4
+        elif(ashguckrichtung!="hinten" and fernash==1 or ashguckrichtung!="hinten" and wiiash==1):
+            try:
+                reaktion.destroy()
+                main.bind("<Key-k>",cpass)
+                main.bind("<Key-K>",cpass)
+            except:
+                pass
+            fernash=0
+            wiiash=0
+            sprechlabel.configure(bg="gray",state="disabled")
     elif(Map=="Herohouseunten"):
         #wand
         if(x==8):
@@ -379,12 +448,15 @@ def ashmoveleft(event):
         #treppe
         elif(y>=42 and y<=50 and x==144):
             x+=4
-        elif(ashguckrichtung!="hinten" and fern==1):
+        elif(ashguckrichtung!="hinten" and fernash==1):
             try:
                 reaktion.destroy()
+                main.bind("<Key-k>",cpass)
+                main.bind("<Key-K>",cpass)
             except:
                 pass
-            fern=0
+            fernash=0
+            sprechlabel.configure(bg="gray",state="disabled")
         elif(x<=136 and x>=120 and y<=38):
             main.bind("<Key-Down>",cpass)
             main.bind("<Key-Up>",cpass)
@@ -407,7 +479,7 @@ def ashmoveleft(event):
                 
 
 def ashmoveright(event):
-    global rightlinksrechts,backlinksrechts,leftlinksrechts,frontlinksrechts,x,y,Map,karte,ashguckrichtung,Ash,ashs,map,sprechen,fern
+    global rightlinksrechts,backlinksrechts,leftlinksrechts,frontlinksrechts,x,y,Map,karte,ashguckrichtung,Ash,ashs,map,sprechen,fernash,reaktion,wiiash,sprechlabel
     rightlinksrechts+=1
     backlinksrechts=0
     leftlinksrechts=0
@@ -445,7 +517,17 @@ def ashmoveright(event):
         #treppe
         elif(x==122 and y<=75 and y>=63):
             x-=4
-     
+        elif(ashguckrichtung!="hinten" and fernash==1 or ashguckrichtung!="hinten" and wiiash==1):
+            try:
+                reaktion.destroy()
+                main.bind("<Key-k>",cpass)
+                main.bind("<Key-K>",cpass)
+                
+            except:
+                pass
+            fernash=0
+            wiiash=0
+            sprechlabel.configure(bg="gray",state="disabled")
         elif(x>=134 and y<=59):
             main.bind("<Key-Down>",cpass)
             main.bind("<Key-Up>",cpass)
@@ -479,17 +561,15 @@ def ashmoveright(event):
         #tisch
         elif(x==28 and y>=86 and y<=134):
             x-=4
-    elif(Map=="Herohouseunten"):
-        if(x==144):
-            x -=4
-        elif(x==64 and y<=74 and y>=22):
-            x -=4
-        elif(ashguckrichtung!="hinten" and fern==1):
+        elif(ashguckrichtung!="hinten" and fernash==1):
             try:
                 reaktion.destroy()
+                main.bind("<Key-k>",cpass)
+                main.bind("<Key-K>",cpass)
             except:
                 pass
-            fern=0
+            fernash=0
+            sprechlabel.configure(bg="gray",state="disabled")
 def ashmovepass(event):
     pass
             
