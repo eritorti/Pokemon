@@ -56,9 +56,15 @@ zählercounter=1
 zählercounterpokemon=1
 klickfürweiter=Label(main,text="Klick irgendwo hin für weiter!",fg="gray75",font=("Arial",25))
 klickfürweiter2=Label(main,text="Klick irgendwo hin für weiter!",fg="gray75",font=("Arial",25))
+itemsbeeren=[]
+itemstränke=[]
 ashs=0
 fernash=0
 wiiash=0
+schildash=0
+spüleash=0
+kühlschrankash=0
+pokemonbag=["Leer","Leer","Leer","Leer","Leer","Leer"]
 
 def menü():
     global lgamename,bstart,bverlassen
@@ -97,7 +103,7 @@ def abenteuerbeginnt():
     eichpluspokemon()
 
 def pokemongewählt():
-    global schiggycounter,glumandacounter,bisasamcounter,starterpokemon,eicherzähltpokemon,eicherzähltpokemon
+    global schiggycounter,glumandacounter,bisasamcounter,starterpokemon,eicherzähltpokemon,eicherzähltpokemon,pokemonbag
     if(schiggycounter==1):
         schiggycounter -=1
         schiggy.destroy()
@@ -113,6 +119,8 @@ def pokemongewählt():
         bisasam.destroy()
         jabisasam.destroy()
         neinbisasam.destroy()
+    pokemonbag.insert(0,starterpokemon)
+    pokemonbag.pop()
     klickfürweiter2.place(x=320,y=750)
     eich.place(x=400,y=140)
     blase.place(x=245,y=23)
@@ -151,14 +159,143 @@ def firstspawn():
     karte.create_image(x,y,image=ashfrontsteht,tags="Ash")
     ashguckrichtung="unten"
     sprechlabel=Button(main,text="Aktion(K)",bg="gray",fg="black",font=("Unciala",20),state="disabled",command=buttoneventSprechen)
-    sprechlabel.place(x=550,y=500)
+    sprechlabel.place(x=600,y=400)
     main.bind("<Button-1>",cpass)
     main.configure(bg="black")
     karte.place(x=390,y=210)
+    uiactive()
     herohouseoben()
     if(geschlecht=="Junge"):
         ashbewegung()
-        
+def uiactive():
+    global ui,buileaven,buiinventar,buipokemon,pokemonbag,uipokemon1,uipokemon2,uipokemon3,uipokemon4,uipokemon5,uipokemon6
+    ui=Frame(main,width=162,height=162,bg="light blue")
+    ui.place(x=390,y=373)
+    buileaven=Button(ui,text="Verlassen",font=("Arial",10),relief=FLAT,command=uileave)
+    buileaven.place(x=100,y=130)
+    buiinventar=Button(ui,text="Inventar",font=("Arial",10),relief=FLAT,command=uiinventar)
+    buiinventar.place(x=10,y=80)
+    buipokemon=Button(ui,text="Pokèmon",font=("Arial",10),relief=FLAT,command=uipokemon)
+    buipokemon.place(x=10,y=30)
+def uipokemon():
+    global ui,buileaven,buiinventar,buipokemon,uipokemonback,uipokemon1,uipokemon2,uipokemon3,uipokemon4,uipokemon5,uipokemon6
+    buileaven.destroy()
+    buiinventar.destroy()
+    buipokemon.destroy()
+    main.bind("<Key-Down>",cpass)
+    main.bind("<Key-Up>",cpass)
+    main.bind("<Key-Right>",cpass)
+    main.bind("<Key-Left>",cpass)
+    ui.configure(bg="cornflower blue")
+    uipokemonback=Button(ui,text="Zurück",relief=FLAT,bg="dark red",activebackground="red",command=cuipokemonback)
+    uipokemon1=Button(ui,text=pokemonbag[0],width=9,height=1,font=("Arial",8))
+    uipokemon2=Button(ui,text=pokemonbag[1],width=9,height=1,font=("Arial",8))
+    uipokemon3=Button(ui,text=pokemonbag[2],width=9,height=1,font=("Arial",8))
+    uipokemon4=Button(ui,text=pokemonbag[3],width=9,height=1,font=("Arial",8))
+    uipokemon5=Button(ui,text=pokemonbag[4],width=9,height=1,font=("Arial",8))
+    uipokemon6=Button(ui,text=pokemonbag[5],width=9,height=1,font=("Arial",8))
+
+    uipokemon1.place(x=10,y=10)
+    uipokemon2.place(x=90,y=10)
+    uipokemon3.place(x=10,y=45)
+    uipokemon4.place(x=90,y=45)
+    uipokemon5.place(x=10,y=80)
+    uipokemon6.place(x=90,y=80)
+    uipokemonback.place(x=60,y=130)
+def cuipokemonback():
+    global uipokemon1,uipokemon2,uipokemon3,uipokemon4,uipokemon5,uipokemon6,uipokemonback
+    uipokemon1.destroy()  
+    uipokemon2.destroy()  
+    uipokemon3.destroy()  
+    uipokemon4.destroy()  
+    uipokemon5.destroy()  
+    uipokemon6.destroy()
+    uipokemonback.destroy()
+    main.bind("<Key-Down>",ashmovefront)
+    main.bind("<Key-Up>",ashmoveback)
+    main.bind("<Key-Right>",ashmoveright)
+    main.bind("<Key-Left>",ashmoveleft)
+    uiactive()
+def uiinventar():
+    global buiinventar,uiinventartränke,uiinventarback,uiinventardisplay,buileaven,reaktion,inventaranzeige,itemstränke,uiinventarbeeren,buipokemon
+    buileaven.destroy()
+    buiinventar.destroy()
+    buipokemon.destroy()
+    try:
+        reaktion.destroy()
+    except:
+        pass
+    main.bind("<Key-Down>",cpass)
+    main.bind("<Key-Up>",cpass)
+    main.bind("<Key-Right>",cpass)
+    main.bind("<Key-Left>",cpass)
+    ui.configure(bg="dark orange")
+    uiinventardisplay=Frame(ui,width=101,height=111,bg="orange")
+    uiinventartränke=Button(ui,text="Tränke",relief=FLAT,activeforeground="orange",bg="light blue",command=cuiinventartränke)
+    uiinventarback=Button(ui,text="Zurück",relief=FLAT,bg="dark red",activebackground="red",command=cuiinventarback)
+    uiinventarbeeren=Button(ui,text="Beeren",relief=FLAT,activeforeground="orange",bg="light blue",command=cuiinventarbeeren)
+    inventaranzeige=Label(uiinventardisplay,text="",bg="orange")
+    
+    uiinventarback.place(x=60,y=130)
+    uiinventardisplay.place(x=50,y=10)
+    inventaranzeige.place(x=10,y=10)
+    uiinventartränke.place(x=2,y=30)
+    uiinventarbeeren.place(x=2,y=60)
+def cuiinventarbeeren():
+    global inventaranzeige,itemsbeeren,uiinventardisplay,uiinventarbeeren,uiinventartränke
+    uiinventarbeeren.configure(bg="blue")
+    uiinventartränke.configure(bg="light blue")
+    if(itemsbeeren==[]):
+        inventaranzeige.configure(text="Leer")
+    elif(itemsbeeren!=[]):
+        inventaranzeige.configure(text=itemsbeeren)
+def cuiinventartränke():
+    global inventaranzeige,itemstränke,uiinventardisplay,uiinventartränke,uiinventarbeeren
+    uiinventartränke.configure(bg="blue")
+    uiinventarbeeren.configure(bg="light blue")
+    if(itemstränke==[]):
+        inventaranzeige.configure(text="Leer")
+    elif(itemstränke!=[]):
+        inventaranzeige.configure(text=itemstränke)
+def cuiinventarback():
+    global uiinventardisplay,uiinventartränke,uiinventarback,inventaranzeige
+    uiinventardisplay.destroy()
+    uiinventartränke.destroy()
+    uiinventarback.destroy()
+    inventaranzeige.destroy()
+    main.bind("<Key-Down>",ashmovefront)
+    main.bind("<Key-Up>",ashmoveback)
+    main.bind("<Key-Right>",ashmoveright)
+    main.bind("<Key-Left>",ashmoveleft)
+#    uileaveyes.destroy()
+    uiactive()
+
+def uileave():
+    global ui,buileaven,uileaveyes,uileaveno,uileavequestion,buiinventar,buipokemon
+    main.bind("<Key-Down>",cpass)
+    main.bind("<Key-Up>",cpass)
+    main.bind("<Key-Right>",cpass)
+    main.bind("<Key-Left>",cpass)
+    buileaven.destroy()
+    buiinventar.destroy()
+    buipokemon.destroy()
+    uileavequestion=Label(ui,text="Wirklich verlassen?",bg="light blue")
+    uileaveyes=Button(ui,text="Ja",bg="dark red",relief=FLAT,command=cverlassen)
+    uileaveno=Button(ui,text="Nein",bg="blue",relief=FLAT,command=cuileaveno)
+    uileavequestion.place(x=30,y=50)
+    uileaveyes.place(x=40,y=80)
+    uileaveno.place(x=80,y=80)
+def cuileaveno():
+    global uileaveyes,uileaveno,uileavequestion
+    main.bind("<Key-Down>",ashmovefront)
+    main.bind("<Key-Up>",ashmoveback)
+    main.bind("<Key-Right>",ashmoveright)
+    main.bind("<Key-Left>",ashmoveleft)
+    uileaveyes.destroy()
+    uileaveno.destroy()
+    uileavequestion.destroy()
+    uiactive()
+
 def ashbewegung():
     global ashmovecounter
     ashmovecounter +=1
@@ -169,7 +306,7 @@ def ashbewegung():
         main.bind("<Key-Left>",ashmoveleft)
 
 def ashmovefront(event):
-    global frontlinksrechts,backlinksrechts,leftlinksrechts,rightlinksrechts,x,y,Map,ashguckrichtung,sprechen,Ash,ashs,Map,fernash,reaktion,wiiash,sprechlabel
+    global frontlinksrechts,backlinksrechts,leftlinksrechts,rightlinksrechts,x,y,Map,ashguckrichtung,sprechen,Ash,ashs,Map,fernash,reaktion,wiiash,sprechlabel,kühlschrankash,spüleash,schildash
     frontlinksrechts+=1
     backlinksrechts=0
     leftlinksrechts=0
@@ -210,7 +347,7 @@ def ashmovefront(event):
         #treppe
         elif(x>=126 and y==59):
             y-=4
-        elif(ashguckrichtung!="hinten" and fernash==1 or ashguckrichtung!="hinten" and wiiash==1):
+        elif(ashguckrichtung!="hinten" and fernash==1 or ashguckrichtung!="hinten" and wiiash==1 or ashguckrichtung!="hinten" and schildash==1):
             try:
                 reaktion.destroy()
                 main.bind("<Key-k>",cpass)
@@ -219,6 +356,7 @@ def ashmovefront(event):
                 pass
             fernash=0
             wiiash=0
+            schildash=0
             sprechlabel.configure(bg="gray",state="disabled")
     elif(Map=="Herohouseunten"):
         #wand
@@ -231,9 +369,9 @@ def ashmovefront(event):
         elif(x<=48 and y==50):
             y-=4
         #tisch
-        elif(x<=60 and x>=28 and y==98):
+        elif(x<=64 and x>=28 and y==98):
             y-=4
-        elif(ashguckrichtung!="hinten" and fernash ==1):
+        elif(ashguckrichtung!="hinten" and fernash ==1 or ashguckrichtung!="hinten" and spüleash==1 or ashguckrichtung!="hinten" and kühlschrankash==1):
             try:
                 reaktion.destroy()
                 main.bind("<Key-k>",cpass)
@@ -241,10 +379,12 @@ def ashmovefront(event):
             except:
                 pass
             fernash=0
+            spüleash=0
+            kühlschrankash=0            
             sprechlabel.configure(bg="gray",state="disabled")
 
 def ashmoveback(event):
-    global backlinksrechts,leftlinksrechts,rightlinksrechts,frontlinksrechts,x,y,Map,ashguckrichtung,sprechen,Ash,ashs,map,fernash,reaktion,wiiash,sprechlabel
+    global backlinksrechts,leftlinksrechts,rightlinksrechts,frontlinksrechts,x,y,Map,ashguckrichtung,sprechen,Ash,ashs,map,fernash,reaktion,wiiash,sprechlabel,kühlschrankash,spüleash,schildash
     backlinksrechts+=1
     frontlinksrechts=0
     leftlinksrechts=0
@@ -277,7 +417,7 @@ def ashmoveback(event):
         elif(y==63 and x<=82):
             y +=4
             if(x>=36 and x<=60 and y<=71):
-                sprechen="fernseher"
+                sprechen="fernseherash"
                 main.bind("<Key-k>",eventSprechen)
                 main.bind("<Key-K>",eventSprechen)
                 fernash=1
@@ -294,7 +434,14 @@ def ashmoveback(event):
         #bett
         elif(x>=122 and x<=146 and y==131):
             y+=4
-        elif(ashguckrichtung!="hinten" and fernash==1 or ashguckrichtung!="hinten" and wiiash==1):
+        #schild
+        elif(x>=102 and x<=106 and y<=51):
+            sprechen="schildash"
+            main.bind("<Key-k>",eventSprechen)
+            main.bind("<Key-K>",eventSprechen)
+            schildash=1
+            sprechlabel.configure(bg="dark red",state="normal",activebackground="red")
+        elif(ashguckrichtung!="hinten" and fernash==1 or ashguckrichtung!="hinten" and wiiash==1 or ashguckrichtung!="hinten" and schildash==1):
             try:
                 reaktion.destroy()
                 main.bind("<Key-k>",cpass)
@@ -303,6 +450,7 @@ def ashmoveback(event):
                 pass
             fernash=0
             wiiash=0
+            schildash=0
             sprechlabel.configure(bg="gray",state="disabled")
     elif(Map=="Herohouseunten"):
 
@@ -315,6 +463,11 @@ def ashmoveback(event):
         #kühlschrank
         elif(x<=72 and x>=60 and y==42):
             y+=4
+            sprechen="kühlschrankash"
+            main.bind("<Key-k>",eventSprechen)
+            main.bind("<Key-K>",eventSprechen)
+            sprechlabel.configure(bg="dark red",state="normal",activebackground="red")
+            kühlschrankash=1
         #fernseher
         elif(x>=76 and x<=112 and y==74):
             y+=4
@@ -327,12 +480,17 @@ def ashmoveback(event):
         elif(x<=48 and y==78):
             y+=4
         #tisch
-        elif(x<=60 and x>=28 and y==134):
+        elif(x<=64 and x>=28 and y==134):
             y+=4
         #spüle
         elif(x<=32 and y==42):
             y+=4
-        elif(ashguckrichtung!="hinten" and fernash==1):
+            sprechen="spüleash"
+            main.bind("<Key-k>",eventSprechen)
+            main.bind("<Key-K>",eventSprechen)
+            sprechlabel.configure(bg="dark red",state="normal",activebackground="red")
+            spüleash=1
+        elif(ashguckrichtung!="hinten" and fernash==1 or ashguckrichtung!="hinten" and spüleash==1 or ashguckrichtung!="hinten" and kühlschrankash==1):
             try:
                 reaktion.destroy()
                 main.bind("<Key-k>",cpass)
@@ -340,48 +498,92 @@ def ashmoveback(event):
             except:
                 pass
             fernash=0
+            spüleash=0
+            kühlschrankash=0            
             sprechlabel.configure(bg="gray",state="disabled")
 def eventSprechen(event):
-    global reaktion,fernash,wiiash
+    global reaktion,fernash,wiiash,schildash,spüleash,kühlschrankash
     try:
         reaktion.destroy()
     except:
         pass
-    reaktion=Label(main,image=aktionblase,text="",font=("Arial",10), compound =CENTER)
+    reaktion=Label(main,image=aktionblase,text="",font=("Arial",7), compound =CENTER)
     reaktion.place(x=388,y=370)
     if(fernash==1):
-        fernsehevent()
+        fernsehashevent()
     elif(wiiash==1):
-        wiievent()
-
+        wiiashevent()
+    elif(schildash==1):
+        reaktion.place(x=388,y=370)
+        schildashevent()
+    elif(kühlschrankash==1):
+        reaktion.place(x=388,y=370)
+        kühlschrankashevent()
+    elif(spüleash==1):
+        reaktion.place(x=388,y=370)
+        spüleashevent()
+        
 def buttoneventSprechen():
-    global reaktion,fernash,wiiash
+    global reaktion,fernash,wiiash,schildash,spüleash,kühlschrankash
     try:
         reaktion.destroy()
     except:
         pass
-    reaktion=Label(main,image=aktionblase,text="",font=("Arial",10), compound =CENTER)
+    reaktion=Label(main,image=aktionblase,text="",font=("Arial",7), compound =CENTER)
     if(fernash==1):
         reaktion.place(x=388,y=370)
-        fernsehevent()
+        fernsehashevent()
     elif(wiiash==1):
         reaktion.place(x=388,y=370)
-        wiievent()
-Items=["Sinobeere","Schutz","Drachenklaue","EP-teiler","Sonderbonbon","Para-Heiler","Aufwecker","Mondstein","",""]
-def fernsehevent():
-    global ashguckrichtung,reaktion,Items
-
-    sendungen=['Prof. Eich:,,Habt immer genug'+'\n'+'Pokèbälle mit!"','Das Item des tages'+'\n'+'ist ,,'+Items,"Besondere Pokemon","Legendäre Pokemon"]
-    reaktion.configure(text=sendungen[random.randint(0,3)])
+        wiiashevent()
+    elif(schildash==1):
+        reaktion.place(x=388,y=370)
+        schildashevent()
+    elif(kühlschrankash==1):
+        reaktion.place(x=388,y=370)
+        kühlschrankashevent()
+    elif(spüleash==1):
+        reaktion.place(x=388,y=370)
+        spüleashevent()
+kühlschrankasheventzähler=1
+spüleasheventzähler=1
+Itemstv=["Sinobeere","Schutz","Drachenklaue","EP-teiler","Sonderbonbon","Para-Heiler","Aufwecker","Mondstein"]
+eichtv=[",,Seit immer freundlich zu Pokèmon,"+"\n"+"sie sind eure Freunde!",",,Hab immer genügend"+"\n"+"Pokèbälle mit!",",,Benutzt nie ein Fahrrad in Höhlen ,"+"\n"+"das ist gefährlich!",",,Erkundet die Welt und sammelt"+"\n"+"viele neue Freunde und Erfahrung!"]
+beeren=["Amrenabeere","Apikobeere","Fragiabeere","Gauvebeere","Hibisbeere","Himmihbeere","Jabocabeere","Jonagobeere","Kuobeere","Maronbeere","Pirsifbeere","Sananabeere","Sinelbeere","Tsitrubeere","Wilbirbeere"]
+tränke=["Trank","Supertrank","Hypertrank","Wasser"]
+def fernsehashevent():
+    global ashguckrichtung,reaktion,Itemstv,eichtv,sprechen
+    sendungen=['Prof. Eich:'+'\n'+eichtv[random.randint(0,3)]+'!"','Das Item des tages'+'\n'+'ist '+Itemstv[random.randint(0,7)],"Besondere Pokemon","Legendäre Pokemon"]
+    reaktion.configure(text=sendungen[random.randint(0,3)],font=("Arial",7))
     sprechen=None
-def wiievent():
-    global ashguckrichtung,reaktion
+def wiiashevent():
+    global ashguckrichtung,reaktion,sprechen
     reaktion.configure(text="Da ist kein Spiel drin...")
     sprechen=None
+def  schildashevent():
+    global reaktion,sprechen
+    reaktion.configure(text="TO DO LISTE:"+"\n"+"1.Kühlschrank aufräumen."+"\n"+"2.Einkaufen gehen."+"\n"+"3.Spülen.")
+    sprechen=None
+def kühlschrankashevent():
+    global reaktion,kühlschrankasheventzähler,itemsbeeren,beeren,sprechen
+    if(kühlschrankasheventzähler==1):
+        kühlschrankasheventitem=beeren[random.randint(0,14)]
+        reaktion.configure(text="Du hast"+"\n"+kühlschrankasheventitem+" erhalten!",fg="dark blue")
+        itemsbeeren.append(kühlschrankasheventitem)
+        kühlschrankasheventzähler-=1
+    elif(kühlschrankasheventzähler==0):
+        reaktion.configure(text="Wow,der Kühlschrank ist"+"\n"+"ja ordentlich")
+def spüleashevent():
+    global itemstränke,reaktion,tränke,sprechen,spüleasheventzähler
+    if(spüleasheventzähler==1):
+        itemstränke.append((tränke[3]))
+        reaktion.configure(text="Du hast"+"\n"+tränke[3]+" erhalten!",fg="dark blue",font=("Delphin",10))
+        spüleasheventzähler-=1
+    elif(spüleasheventzähler==0):
+        reaktion.configure(text="Puh , alles ist Sauber")
     
-
 def ashmoveleft(event):
-    global leftlinksrechts,backlinksrechts,rightlinksrechts,frontlinksrechts,x,y,Map,ashguckrichtung,Ash,ashs,map,sprechen,fernash,reaktion,wiiash,sprechlabel
+    global leftlinksrechts,backlinksrechts,rightlinksrechts,frontlinksrechts,x,y,Map,ashguckrichtung,Ash,ashs,map,sprechen,fernash,reaktion,wiiash,sprechlabel,kühlschrankash,spüleash,schildash
     leftlinksrechts+=1
     backlinksrechts=0
     frontlinksrechts=0
@@ -416,7 +618,7 @@ def ashmoveleft(event):
         #wii
         elif(x<=82 and y<=59):
             x+=4
-        elif(ashguckrichtung!="hinten" and fernash==1 or ashguckrichtung!="hinten" and wiiash==1):
+        elif(ashguckrichtung!="hinten" and fernash==1 or ashguckrichtung!="hinten" and wiiash==1 or ashguckrichtung!="hinten" and schildash==1):
             try:
                 reaktion.destroy()
                 main.bind("<Key-k>",cpass)
@@ -425,6 +627,7 @@ def ashmoveleft(event):
                 pass
             fernash=0
             wiiash=0
+            schildash=0
             sprechlabel.configure(bg="gray",state="disabled")
     elif(Map=="Herohouseunten"):
         #wand
@@ -448,7 +651,7 @@ def ashmoveleft(event):
         #treppe
         elif(y>=42 and y<=50 and x==144):
             x+=4
-        elif(ashguckrichtung!="hinten" and fernash==1):
+        elif(ashguckrichtung!="hinten" and fernash==1 or ashguckrichtung!="hinten" and spüleash==1 or ashguckrichtung!="hinten" and kühlschrankash==1):
             try:
                 reaktion.destroy()
                 main.bind("<Key-k>",cpass)
@@ -456,6 +659,8 @@ def ashmoveleft(event):
             except:
                 pass
             fernash=0
+            spüleash=0
+            kühlschrankash=0
             sprechlabel.configure(bg="gray",state="disabled")
         elif(x<=136 and x>=120 and y<=38):
             main.bind("<Key-Down>",cpass)
@@ -479,7 +684,7 @@ def ashmoveleft(event):
                 
 
 def ashmoveright(event):
-    global rightlinksrechts,backlinksrechts,leftlinksrechts,frontlinksrechts,x,y,Map,karte,ashguckrichtung,Ash,ashs,map,sprechen,fernash,reaktion,wiiash,sprechlabel
+    global rightlinksrechts,backlinksrechts,leftlinksrechts,frontlinksrechts,x,y,Map,karte,ashguckrichtung,Ash,ashs,map,sprechen,fernash,reaktion,wiiash,sprechlabel,kühlschrankash,spüleash,schildash
     rightlinksrechts+=1
     backlinksrechts=0
     leftlinksrechts=0
@@ -517,7 +722,7 @@ def ashmoveright(event):
         #treppe
         elif(x==122 and y<=75 and y>=63):
             x-=4
-        elif(ashguckrichtung!="hinten" and fernash==1 or ashguckrichtung!="hinten" and wiiash==1):
+        elif(ashguckrichtung!="hinten" and fernash==1 or ashguckrichtung!="hinten" and wiiash==1 or ashguckrichtung!="hinten" and schildash==1):
             try:
                 reaktion.destroy()
                 main.bind("<Key-k>",cpass)
@@ -527,6 +732,7 @@ def ashmoveright(event):
                 pass
             fernash=0
             wiiash=0
+            schildash=0
             sprechlabel.configure(bg="gray",state="disabled")
         elif(x>=134 and y<=59):
             main.bind("<Key-Down>",cpass)
@@ -561,7 +767,7 @@ def ashmoveright(event):
         #tisch
         elif(x==28 and y>=86 and y<=134):
             x-=4
-        elif(ashguckrichtung!="hinten" and fernash==1):
+        elif(ashguckrichtung!="hinten" and fernash==1 or ashguckrichtung!="hinten" and spüleash==1 or ashguckrichtung!="hinten" and kühlschrankash==1):
             try:
                 reaktion.destroy()
                 main.bind("<Key-k>",cpass)
@@ -569,6 +775,8 @@ def ashmoveright(event):
             except:
                 pass
             fernash=0
+            spüleash=0
+            kühlschrankash=0
             sprechlabel.configure(bg="gray",state="disabled")
 def ashmovepass(event):
     pass
@@ -602,7 +810,7 @@ glumandacounter=0
 bisasamcounter=0
 
 def glumandafrage():
-    global glumanda,glumandacounter,jaglumanda,neinglumanda,starterpokemon
+    global glumanda,glumandacounter,jaglumanda,neinglumanda,starterpokemon,pokemonbag
     glumandacounter +=1
     starterpokemon="Glumanda"
     pokeball1.destroy()
@@ -617,7 +825,7 @@ def glumandafrage():
     neinglumanda.place(x=360,y=570)
     glumanda.place(x=400,y=200)    
 def schiggyfrage():
-    global schiggy,schiggycounter,jaschiggy,neinschiggy,starterpokemon
+    global schiggy,schiggycounter,jaschiggy,neinschiggy,starterpokemon,pokemonbag
     schiggycounter +=1
     starterpokemon="Schiggy"
     pokeball1.destroy()
@@ -632,7 +840,7 @@ def schiggyfrage():
     neinschiggy.place(x=360,y=570)
     schiggy.place(x=400,y=200)
 def bisasamfrage():
-    global bisasam,bisasamcounter,jabisasam,neinbisasam,starterpokemon
+    global bisasam,bisasamcounter,jabisasam,neinbisasam,starterpokemon,pokemonbag
     bisasamcounter +=1
     starterpokemon="Bisasam"
     pokeball1.destroy()
@@ -647,7 +855,7 @@ def bisasamfrage():
     neinbisasam.place(x=360,y=570)
     bisasam.place(x=400,y=200)
 def nochmalpokemon():
-    global schiggycounter,glumandacounter,bisasamcounter,starterpokemon
+    global schiggycounter,glumandacounter,bisasamcounter,starterpokemon,pokemonbag
     if(schiggycounter==1):
         schiggycounter -=1
         schiggy.destroy()
@@ -664,6 +872,7 @@ def nochmalpokemon():
         jabisasam.destroy()
         neinbisasam.destroy()
     starterpokemon=None
+    pokemonbag=[]
     blase.configure(text="Ok nochmal ,"+"\n"+"such dir jetzt"+"\n"+"dein Pokèmon aus."+"\n"*4)
     pokemonwählen()
 
@@ -806,7 +1015,10 @@ def cstartback():
 
 def cverlassen():
     main.destroy()
-
+def it(event):
+    print(itemstränke)
+    print(itemsbeeren)
+main.bind("<Key-i>",it)
 
 
 menü()
