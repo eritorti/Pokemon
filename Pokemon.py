@@ -3,6 +3,7 @@ from tkinter import *
 import tkinter
 import time
 import random
+from Kampf_system import pokemon
 
 
 main=tkinter.Tk()
@@ -39,13 +40,13 @@ herohousedown=PhotoImage(file="herohouseunten.png")
 schwarz=PhotoImage(file="schwarz.gif")
 aktionblase=PhotoImage(file="aktionsblase.png")
 
+momentanespokemon=None
 sprechen=None
 Map=None
 geschlecht=None
 v=StringVar()
 name=v
 ashguckrichtung=None
-Map=None
 starterpokemon=None
 #print(name.get())
 eichcounter=0
@@ -65,6 +66,14 @@ schildash=0
 spüleash=0
 kühlschrankash=0
 pokemonbag=["Leer","Leer","Leer","Leer","Leer","Leer"]
+
+schiggyinfos=pokemon(0 ,12 ,17 ,14 ,13 ,16 ,13 ,20 ,20 ,"Schiggy" ,["Pfund","Heuler","",""] ,1 ,0 ,20)
+glumandainfos=pokemon(0 ,16 ,13 ,15 ,14 ,14 ,12 ,23 ,23 ,"Glumanda",["Tackle","Kreideschrei","",""] ,1 ,0 ,20)
+bisasaminfos=pokemon(0 ,14 ,15 ,13 ,17 ,18 ,12 ,19 ,19 ,"Bisasam" ,["Tackle","Heuler","",""] ,1 ,0 ,20)
+
+passivname="Wasserschwert"
+passivdescription="Wenn du unter wenig HP hast wirst du stärker!"
+
 
 def menü():
     global lgamename,bstart,bverlassen
@@ -169,14 +178,14 @@ def firstspawn():
         ashbewegung()
 def uiactive():
     global ui,buileaven,buiinventar,buipokemon,pokemonbag,uipokemon1,uipokemon2,uipokemon3,uipokemon4,uipokemon5,uipokemon6
-    ui=Frame(main,width=162,height=162,bg="light blue")
-    ui.place(x=390,y=373)
-    buileaven=Button(ui,text="Verlassen",font=("Arial",10),relief=FLAT,command=uileave)
-    buileaven.place(x=100,y=130)
-    buiinventar=Button(ui,text="Inventar",font=("Arial",10),relief=FLAT,command=uiinventar)
-    buiinventar.place(x=10,y=80)
-    buipokemon=Button(ui,text="Pokèmon",font=("Arial",10),relief=FLAT,command=uipokemon)
-    buipokemon.place(x=10,y=30)
+    ui=Frame(main,width=250,height=250,bg="light blue")
+    ui.place(x=340,y=373)
+    buileaven=Button(ui,text="Verlassen",font=("Arial",13),width=10,height=1,relief=FLAT,command=uileave)
+    buileaven.place(x=140,y=200)
+    buiinventar=Button(ui,text="Inventar",font=("Arial",13),width=10,height=1,relief=FLAT,command=uiinventar)
+    buiinventar.place(x=10,y=100)
+    buipokemon=Button(ui,text="Pokèmon",font=("Arial",13),width=10,height=1,relief=FLAT,command=uipokemon)
+    buipokemon.place(x=10,y=20)
 def uipokemon():
     global ui,buileaven,buiinventar,buipokemon,uipokemonback,uipokemon1,uipokemon2,uipokemon3,uipokemon4,uipokemon5,uipokemon6
     buileaven.destroy()
@@ -188,12 +197,12 @@ def uipokemon():
     main.bind("<Key-Left>",cpass)
     ui.configure(bg="cornflower blue")
     uipokemonback=Button(ui,text="Zurück",relief=FLAT,bg="dark red",activebackground="red",command=cuipokemonback)
-    uipokemon1=Button(ui,text=pokemonbag[0],width=9,height=1,font=("Arial",8))
-    uipokemon2=Button(ui,text=pokemonbag[1],width=9,height=1,font=("Arial",8))
-    uipokemon3=Button(ui,text=pokemonbag[2],width=9,height=1,font=("Arial",8))
-    uipokemon4=Button(ui,text=pokemonbag[3],width=9,height=1,font=("Arial",8))
-    uipokemon5=Button(ui,text=pokemonbag[4],width=9,height=1,font=("Arial",8))
-    uipokemon6=Button(ui,text=pokemonbag[5],width=9,height=1,font=("Arial",8))
+    uipokemon1=Button(ui,text=pokemonbag[0],width=9,height=1,font=("Arial",8),command=showpokemon1)
+    uipokemon2=Button(ui,text=pokemonbag[1],width=9,height=1,font=("Arial",8),command=showpokemon2)
+    uipokemon3=Button(ui,text=pokemonbag[2],width=9,height=1,font=("Arial",8),command=showpokemon3)
+    uipokemon4=Button(ui,text=pokemonbag[3],width=9,height=1,font=("Arial",8),command=showpokemon4)
+    uipokemon5=Button(ui,text=pokemonbag[4],width=9,height=1,font=("Arial",8),command=showpokemon5)
+    uipokemon6=Button(ui,text=pokemonbag[5],width=9,height=1,font=("Arial",8),command=showpokemon6)
 
     uipokemon1.place(x=10,y=10)
     uipokemon2.place(x=90,y=10)
@@ -202,6 +211,104 @@ def uipokemon():
     uipokemon5.place(x=10,y=80)
     uipokemon6.place(x=90,y=80)
     uipokemonback.place(x=60,y=130)
+wichpokemon=None
+def showpokemon1():
+    global wichpokemon,pokemonbag
+    wichpokemon=1234
+    showpokemon()
+def showpokemon2():
+    global wichpokemon,pokemonbag
+    wichpokemon=pokemonbag[1]
+    showpokemon()
+def showpokemon3():
+    global wichpokemon,pokemonbag
+    wichpokemon=pokemonbag[2]
+    showpokemon()
+def showpokemon4():
+    global wichpokemon,pokemonbag
+    wichpokemon=pokemonbag[3]
+    showpokemon()
+def showpokemon5():
+    global wichpokemon,pokemonbag
+    wichpokemon=pokemonbag[4]
+    showpokemon()
+def showpokemon6():
+    global wichpokemon,pokemonbag
+    wichpokemon=pokemonbag[5]
+    showpokemon()
+def showpokemon():
+    global uipokemonback,uipokemon1,uipokemon2,uipokemon3,uipokemon4,uipokemon5,uipokemon6,momentanespokemon,ui,showdisplay,pokemonbag,showpokemon1back,showpokemonstats,showpokemonangriffe,showpokemon1zähler
+    uipokemon1.destroy()  
+    uipokemon2.destroy()  
+    uipokemon3.destroy()  
+    uipokemon4.destroy()  
+    uipokemon5.destroy()  
+    uipokemon6.destroy()
+    showpokemon1zähler=1
+    uipokemonback.destroy()
+    showdisplay=Frame(ui,bg="orange",width=150,height=215)
+    showpokemonstats=Button(ui,text="Stats",relief=FLAT,command=pokemonstats)
+    showpokemonangriffe=Button(ui,text="Attacken",relief=FLAT,command=pokemonattacken)
+    showpokemonstats.place(x=2,y=30)
+    showpokemonangriffe.place(x=2,y=60)
+    ui.configure(bg="dark orange")
+    showdisplay.place(x=85,y=12)
+    showpokemon1back=Button(ui,text="Zurück",bg="dark red",activebackground="red",command=showpokemonback)
+    showpokemon1back.place(x=2,y=150)
+def pokemonstats():
+    global showdisplay,pokemonbag,momentanespokemon,showhp,showatk,showmagicatk,showdefends,showmagicdefends,showspd,showacc,schiggyinfos
+    showdisplay.destroy()
+    showdisplay=Frame(ui,bg="orange",width=150,height=215)
+    showdisplay.place(x=85,y=12)
+    showhp=ttk.Progressbar(showdisplay,maximum=pokemonbag[0].maxhp,value=schiggyinfos.momentanehp)
+    showhptext=Label(showdisplay,text="Leben:",bg="orange")
+    showatk=Label(showdisplay,bg="dark orange",text="Angriff:"+str(schiggyinfos.atk)+" "*20,width=30,font=("Arial",10))
+    showmagicatk=Label(showdisplay,bg="orange",text="Magischer Angriff:"+str(schiggyinfos.magicatk)+" "*20,width=30,font=("Arial",10))
+    showdefends=Label(showdisplay,bg="dark orange",text="Verteidigung:"+str(schiggyinfos.defends)+" "*20,width=30,font=("Arial",10))
+    showmagicdefends=Label(showdisplay,bg="orange",text="Magische"+" "*20+"\n"+"Vertdeidigung:"+str(schiggyinfos.magicdefends)+" "*20,width=30,font=("Arial",10))
+    showspd=Label(showdisplay,bg="dark orange",text="Agilität:"+str(schiggyinfos.spd)+" "*20,width=30,font=("Arial",10))
+    showacc=Label(showdisplay,bg="orange",text="Genauigkeit:"+str(schiggyinfos.acc)+" "*20,width=30,font=("Arial",10))
+    
+    showatk.place(x=0,y=35)
+    showmagicatk.place(x=0,y=60)
+    showdefends.place(x=0,y=85)
+    showmagicdefends.place(x=0,y=110)
+    showspd.place(x=0,y=160)
+    showacc.place(x=0,y=185)
+    showhp.place(x=50,y=5)
+    showhptext.place()
+def pokemonattacken():
+    global schiggyinfos,showdisplay,showattacke1,showattacke2,showattacke3,showattacke4
+    showdisplay.destroy()
+    showdisplay=Frame(ui,bg="white",width=150,height=145)
+    showdisplay.place(x=85,y=12)
+    showattacke1=Label(showdisplay,text=schiggyinfos.attacken[0]+" "*20,bg="light gray",width=30,font=("Arial",10))
+    showattacke2=Label(showdisplay,text=schiggyinfos.attacken[1]+" "*20,bg="white",width=30,font=("Arial",10))
+    showattacke3=Label(showdisplay,text=schiggyinfos.attacken[2]+" "*20,bg="light gray",width=30,font=("Arial",10))
+    showattacke4=Label(showdisplay,text=schiggyinfos.attacken[3]+" "*20,bg="white",width=30,font=("Arial",10))
+    showname=Label(showdisplay,text="Name:"+schiggyinfos.name+" "*20,bg="white",width=30,font=("Arial",10))
+
+    showname.place(x=0,y=10)
+    showattacke1.place(x=0,y=40)
+    showattacke2.place(x=0,y=70)
+    showattacke3.place(x=0,y=100)
+    showattacke4.place(x=0,y=130)
+def showpokemonback():
+    global showhp,showatk,showmagicatk,showdefends,showmagicdefends,showspd,showacc,showdisplay,showpokemon1back,showpokemonstats,showpokemonangriffe,showpokemon1zähler
+   # if(showpokemon1zähler==1):
+   #     showhp.destroy()
+   #     showatk.destroy()
+   #     showmagicatk.destroy()
+   #     showdefends.destroy()
+   #     showmagicdefends.destroy()
+   #     showspd.destroy()
+   #     showacc.destroy()
+   #     showpokemon1zähler=0
+    showdisplay.destroy()
+    showpokemon1back.destroy()
+    showpokemonstats.destroy()
+    showpokemonangriffe.destroy()
+    uipokemon()
 def cuipokemonback():
     global uipokemon1,uipokemon2,uipokemon3,uipokemon4,uipokemon5,uipokemon6,uipokemonback
     uipokemon1.destroy()  
@@ -568,7 +675,7 @@ def kühlschrankashevent():
     global reaktion,kühlschrankasheventzähler,itemsbeeren,beeren,sprechen
     if(kühlschrankasheventzähler==1):
         kühlschrankasheventitem=beeren[random.randint(0,14)]
-        reaktion.configure(text="Du hast"+"\n"+kühlschrankasheventitem+" erhalten!",fg="dark blue")
+        reaktion.configure(text="Du hast"+"\n"+kühlschrankasheventitem+" erhalten!",font=("Delphin",10),fg="dark blue")
         itemsbeeren.append(kühlschrankasheventitem)
         kühlschrankasheventzähler-=1
     elif(kühlschrankasheventzähler==0):
@@ -1016,8 +1123,7 @@ def cstartback():
 def cverlassen():
     main.destroy()
 def it(event):
-    print(itemstränke)
-    print(itemsbeeren)
+    print(pokemon.Schiggy.hp)
 main.bind("<Key-i>",it)
 
 
