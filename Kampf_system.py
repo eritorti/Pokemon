@@ -15,15 +15,30 @@ class pokemon(object):
         self.lvl=lvl
         self.ep=ep
         self.epnextlvl=epnextlvl
+
     def schadenskonsole(self , ziel , schaden):
         if(ziel.momentanehp - schaden < ziel.minhp):
             return False
         else:
             ziel.momentanehp -=schaden
             return True
+
     def lvlup(self ,menge):
         if(self.ep + menge >=self.epnextlvl):
             self.lvl +=1
             self.epnextlvl += self.epnextlvl*self.lvl
         else:
             self.ep += menge
+
+    def heilen(self,trank):
+        self.momentanehp += trank.heilmenge
+        
+class tränke(object):
+
+    def __init__(self ,name, heilmenge,status):
+        self.name=name
+        self.heilmenge=heilmenge
+        self.status=status
+trank=tränke("Trank",10)
+
+        

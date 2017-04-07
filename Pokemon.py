@@ -65,7 +65,7 @@ wiiash=0
 schildash=0
 spüleash=0
 kühlschrankash=0
-pokemonbag=["Leer","Leer","Leer","Leer","Leer","Leer"]
+pokemonbag=[]
 
 schiggyinfos=pokemon(0 ,12 ,17 ,14 ,13 ,16 ,13 ,20 ,20 ,"Schiggy" ,["Pfund","Heuler","",""] ,1 ,0 ,20)
 glumandainfos=pokemon(0 ,16 ,13 ,15 ,14 ,14 ,12 ,23 ,23 ,"Glumanda",["Tackle","Kreideschrei","",""] ,1 ,0 ,20)
@@ -128,8 +128,7 @@ def pokemongewählt():
         bisasam.destroy()
         jabisasam.destroy()
         neinbisasam.destroy()
-    pokemonbag.insert(0,starterpokemon)
-    pokemonbag.pop()
+    pokemonbag.append(starterpokemon)
     klickfürweiter2.place(x=320,y=750)
     eich.place(x=400,y=140)
     blase.place(x=245,y=23)
@@ -137,7 +136,7 @@ def pokemongewählt():
 
 def gleichgehtslos():
     global eichcounterpokemon,eicherzähltpokemon,klickfürweiter2,zählercounterpokemon,eichzählerpokemon
-    blase.configure(text=starterpokemon+" also ,"+"\n"+"ich habe sofort gesehen"+"\n"+"das ihr euch mögt."+"\n"*3)
+    blase.configure(text=pokemonbag[0].name+" also ,"+"\n"+"ich habe sofort gesehen"+"\n"+"das ihr euch mögt."+"\n"*3)
     if(zählercounterpokemon==1):
         eichzählerpokemon() 
     if(eichcounterpokemon==1):
@@ -187,63 +186,29 @@ def uiactive():
     buipokemon=Button(ui,text="Pokèmon",font=("Arial",13),width=10,height=1,relief=FLAT,command=uipokemon)
     buipokemon.place(x=10,y=20)
 def uipokemon():
-    global ui,buileaven,buiinventar,buipokemon,uipokemonback,uipokemon1,uipokemon2,uipokemon3,uipokemon4,uipokemon5,uipokemon6
+    global ui,buileaven,buiinventar,buipokemon,uipokemonback,uipokemon1
     buileaven.destroy()
     buiinventar.destroy()
     buipokemon.destroy()
+    print(pokemonbag[0])
     main.bind("<Key-Down>",cpass)
     main.bind("<Key-Up>",cpass)
     main.bind("<Key-Right>",cpass)
     main.bind("<Key-Left>",cpass)
     ui.configure(bg="cornflower blue")
     uipokemonback=Button(ui,text="Zurück",relief=FLAT,bg="dark red",activebackground="red",command=cuipokemonback)
-    uipokemon1=Button(ui,text=pokemonbag[0],width=9,height=1,font=("Arial",8),command=showpokemon1)
-    uipokemon2=Button(ui,text=pokemonbag[1],width=9,height=1,font=("Arial",8),command=showpokemon2)
-    uipokemon3=Button(ui,text=pokemonbag[2],width=9,height=1,font=("Arial",8),command=showpokemon3)
-    uipokemon4=Button(ui,text=pokemonbag[3],width=9,height=1,font=("Arial",8),command=showpokemon4)
-    uipokemon5=Button(ui,text=pokemonbag[4],width=9,height=1,font=("Arial",8),command=showpokemon5)
-    uipokemon6=Button(ui,text=pokemonbag[5],width=9,height=1,font=("Arial",8),command=showpokemon6)
+
+    uipokemon1=Button(ui,text=pokemonbag[0].name,width=9,height=1,font=("Arial",8),command=showpokemon)
+
 
     uipokemon1.place(x=10,y=10)
-    uipokemon2.place(x=90,y=10)
-    uipokemon3.place(x=10,y=45)
-    uipokemon4.place(x=90,y=45)
-    uipokemon5.place(x=10,y=80)
-    uipokemon6.place(x=90,y=80)
+
     uipokemonback.place(x=60,y=130)
-wichpokemon=None
-def showpokemon1():
-    global wichpokemon,pokemonbag
-    wichpokemon=1234
-    showpokemon()
-def showpokemon2():
-    global wichpokemon,pokemonbag
-    wichpokemon=pokemonbag[1]
-    showpokemon()
-def showpokemon3():
-    global wichpokemon,pokemonbag
-    wichpokemon=pokemonbag[2]
-    showpokemon()
-def showpokemon4():
-    global wichpokemon,pokemonbag
-    wichpokemon=pokemonbag[3]
-    showpokemon()
-def showpokemon5():
-    global wichpokemon,pokemonbag
-    wichpokemon=pokemonbag[4]
-    showpokemon()
-def showpokemon6():
-    global wichpokemon,pokemonbag
-    wichpokemon=pokemonbag[5]
-    showpokemon()
+
 def showpokemon():
-    global uipokemonback,uipokemon1,uipokemon2,uipokemon3,uipokemon4,uipokemon5,uipokemon6,momentanespokemon,ui,showdisplay,pokemonbag,showpokemon1back,showpokemonstats,showpokemonangriffe,showpokemon1zähler
+    global uipokemonback,uipokemon1,momentanespokemon,ui,showdisplay,pokemonbag,showpokemon1back,showpokemonstats,showpokemonangriffe,showpokemon1zähler
     uipokemon1.destroy()  
-    uipokemon2.destroy()  
-    uipokemon3.destroy()  
-    uipokemon4.destroy()  
-    uipokemon5.destroy()  
-    uipokemon6.destroy()
+
     showpokemon1zähler=1
     uipokemonback.destroy()
     showdisplay=Frame(ui,bg="orange",width=150,height=215)
@@ -255,19 +220,21 @@ def showpokemon():
     showdisplay.place(x=85,y=12)
     showpokemon1back=Button(ui,text="Zurück",bg="dark red",activebackground="red",command=showpokemonback)
     showpokemon1back.place(x=2,y=150)
+pokemonattackentimer=0
 def pokemonstats():
-    global showdisplay,pokemonbag,momentanespokemon,showhp,showatk,showmagicatk,showdefends,showmagicdefends,showspd,showacc,schiggyinfos
+    global showdisplay,pokemonbag,momentanespokemon,showhp,showatk,showmagicatk,showdefends,showmagicdefends,showspd,showacc,schiggyinfos,pokemonstatstimer
     showdisplay.destroy()
+
     showdisplay=Frame(ui,bg="orange",width=150,height=215)
     showdisplay.place(x=85,y=12)
-    showhp=ttk.Progressbar(showdisplay,maximum=pokemonbag[0].maxhp,value=schiggyinfos.momentanehp)
+    showhp=ttk.Progressbar(showdisplay,maximum=pokemonbag[0].maxhp,value=pokemonbag[0].momentanehp)
     showhptext=Label(showdisplay,text="Leben:",bg="orange")
-    showatk=Label(showdisplay,bg="dark orange",text="Angriff:"+str(schiggyinfos.atk)+" "*20,width=30,font=("Arial",10))
-    showmagicatk=Label(showdisplay,bg="orange",text="Magischer Angriff:"+str(schiggyinfos.magicatk)+" "*20,width=30,font=("Arial",10))
-    showdefends=Label(showdisplay,bg="dark orange",text="Verteidigung:"+str(schiggyinfos.defends)+" "*20,width=30,font=("Arial",10))
-    showmagicdefends=Label(showdisplay,bg="orange",text="Magische"+" "*20+"\n"+"Vertdeidigung:"+str(schiggyinfos.magicdefends)+" "*20,width=30,font=("Arial",10))
-    showspd=Label(showdisplay,bg="dark orange",text="Agilität:"+str(schiggyinfos.spd)+" "*20,width=30,font=("Arial",10))
-    showacc=Label(showdisplay,bg="orange",text="Genauigkeit:"+str(schiggyinfos.acc)+" "*20,width=30,font=("Arial",10))
+    showatk=Label(showdisplay,bg="dark orange",text="Angriff:"+str(pokemonbag[0].atk)+" "*20,width=30,font=("Arial",10))
+    showmagicatk=Label(showdisplay,bg="orange",text="Magischer Angriff:"+str(pokemonbag[0].magicatk)+" "*20,width=30,font=("Arial",10))
+    showdefends=Label(showdisplay,bg="dark orange",text="Verteidigung:"+str(pokemonbag[0].defends)+" "*20,width=30,font=("Arial",10))
+    showmagicdefends=Label(showdisplay,bg="orange",text="Magische"+" "*20+"\n"+"Vertdeidigung:"+str(pokemonbag[0].magicdefends)+" "*20,width=30,font=("Arial",10))
+    showspd=Label(showdisplay,bg="dark orange",text="Agilität:"+str(pokemonbag[0].spd)+" "*20,width=30,font=("Arial",10))
+    showacc=Label(showdisplay,bg="orange",text="Genauigkeit:"+str(pokemonbag[0].acc)+" "*20,width=30,font=("Arial",10))
     
     showatk.place(x=0,y=35)
     showmagicatk.place(x=0,y=60)
@@ -278,15 +245,16 @@ def pokemonstats():
     showhp.place(x=50,y=5)
     showhptext.place()
 def pokemonattacken():
-    global schiggyinfos,showdisplay,showattacke1,showattacke2,showattacke3,showattacke4
+    global schiggyinfos,showdisplay,showattacke1,showattacke2,showattacke3,showattacke4,pokemonstatstimer
     showdisplay.destroy()
+        
     showdisplay=Frame(ui,bg="white",width=150,height=145)
     showdisplay.place(x=85,y=12)
-    showattacke1=Label(showdisplay,text=schiggyinfos.attacken[0]+" "*20,bg="light gray",width=30,font=("Arial",10))
-    showattacke2=Label(showdisplay,text=schiggyinfos.attacken[1]+" "*20,bg="white",width=30,font=("Arial",10))
-    showattacke3=Label(showdisplay,text=schiggyinfos.attacken[2]+" "*20,bg="light gray",width=30,font=("Arial",10))
-    showattacke4=Label(showdisplay,text=schiggyinfos.attacken[3]+" "*20,bg="white",width=30,font=("Arial",10))
-    showname=Label(showdisplay,text="Name:"+schiggyinfos.name+" "*20,bg="white",width=30,font=("Arial",10))
+    showattacke1=Label(showdisplay,text=pokemonbag[0].attacken[0]+" "*20,bg="light gray",width=30,font=("Arial",10))
+    showattacke2=Label(showdisplay,text=pokemonbag[0].attacken[1]+" "*20,bg="white",width=30,font=("Arial",10))
+    showattacke3=Label(showdisplay,text=pokemonbag[0].attacken[2]+" "*20,bg="light gray",width=30,font=("Arial",10))
+    showattacke4=Label(showdisplay,text=pokemonbag[0].attacken[3]+" "*20,bg="white",width=30,font=("Arial",10))
+    showname=Label(showdisplay,text="Name:"+pokemonbag[0].name+" "*20,bg="white",width=30,font=("Arial",10))
 
     showname.place(x=0,y=10)
     showattacke1.place(x=0,y=40)
@@ -295,15 +263,6 @@ def pokemonattacken():
     showattacke4.place(x=0,y=130)
 def showpokemonback():
     global showhp,showatk,showmagicatk,showdefends,showmagicdefends,showspd,showacc,showdisplay,showpokemon1back,showpokemonstats,showpokemonangriffe,showpokemon1zähler
-   # if(showpokemon1zähler==1):
-   #     showhp.destroy()
-   #     showatk.destroy()
-   #     showmagicatk.destroy()
-   #     showdefends.destroy()
-   #     showmagicdefends.destroy()
-   #     showspd.destroy()
-   #     showacc.destroy()
-   #     showpokemon1zähler=0
     showdisplay.destroy()
     showpokemon1back.destroy()
     showpokemonstats.destroy()
@@ -312,11 +271,7 @@ def showpokemonback():
 def cuipokemonback():
     global uipokemon1,uipokemon2,uipokemon3,uipokemon4,uipokemon5,uipokemon6,uipokemonback
     uipokemon1.destroy()  
-    uipokemon2.destroy()  
-    uipokemon3.destroy()  
-    uipokemon4.destroy()  
-    uipokemon5.destroy()  
-    uipokemon6.destroy()
+
     uipokemonback.destroy()
     main.bind("<Key-Down>",ashmovefront)
     main.bind("<Key-Up>",ashmoveback)
@@ -917,9 +872,9 @@ glumandacounter=0
 bisasamcounter=0
 
 def glumandafrage():
-    global glumanda,glumandacounter,jaglumanda,neinglumanda,starterpokemon,pokemonbag
+    global glumanda,glumandacounter,jaglumanda,neinglumanda,starterpokemon,pokemonbag,glumandainfos
     glumandacounter +=1
-    starterpokemon="Glumanda"
+    starterpokemon=glumandainfos
     pokeball1.destroy()
     pokeball2.destroy()
     pokeball3.destroy()
@@ -932,9 +887,9 @@ def glumandafrage():
     neinglumanda.place(x=360,y=570)
     glumanda.place(x=400,y=200)    
 def schiggyfrage():
-    global schiggy,schiggycounter,jaschiggy,neinschiggy,starterpokemon,pokemonbag
+    global schiggy,schiggycounter,jaschiggy,neinschiggy,starterpokemon,pokemonbag,schiggyinfos
     schiggycounter +=1
-    starterpokemon="Schiggy"
+    starterpokemon=schiggyinfos
     pokeball1.destroy()
     pokeball2.destroy()
     pokeball3.destroy()
@@ -947,9 +902,9 @@ def schiggyfrage():
     neinschiggy.place(x=360,y=570)
     schiggy.place(x=400,y=200)
 def bisasamfrage():
-    global bisasam,bisasamcounter,jabisasam,neinbisasam,starterpokemon,pokemonbag
+    global bisasam,bisasamcounter,jabisasam,neinbisasam,starterpokemon,pokemonbag,bisasaminfos
     bisasamcounter +=1
-    starterpokemon="Bisasam"
+    starterpokemon=bisasaminfos
     pokeball1.destroy()
     pokeball2.destroy()
     pokeball3.destroy()
@@ -1123,7 +1078,7 @@ def cstartback():
 def cverlassen():
     main.destroy()
 def it(event):
-    print(pokemon.Schiggy.hp)
+    pokemonbag[0].schadenskonsole(pokemonbag[0],7)
 main.bind("<Key-i>",it)
 
 
