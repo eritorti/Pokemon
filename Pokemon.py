@@ -4,7 +4,8 @@ import tkinter
 import time
 import random
 from Kampf_system import pokemon
-
+from Kampf_system import tränke
+from Kampf_system import beeren
 
 main=tkinter.Tk()
 main.geometry("1000x800")
@@ -67,9 +68,18 @@ spüleash=0
 kühlschrankash=0
 pokemonbag=[]
 
-schiggyinfos=pokemon(0 ,12 ,17 ,14 ,13 ,16 ,13 ,20 ,20 ,"Schiggy" ,["Pfund","Heuler","",""] ,1 ,0 ,20)
-glumandainfos=pokemon(0 ,16 ,13 ,15 ,14 ,14 ,12 ,23 ,23 ,"Glumanda",["Tackle","Kreideschrei","",""] ,1 ,0 ,20)
-bisasaminfos=pokemon(0 ,14 ,15 ,13 ,17 ,18 ,12 ,19 ,19 ,"Bisasam" ,["Tackle","Heuler","",""] ,1 ,0 ,20)
+schiggyinfos=pokemon(0 ,12 ,17 ,14 ,13 ,16 ,13 ,20 ,20 ,"Schiggy" ,["Pfund","Heuler","",""] ,1 ,0 ,5)
+glumandainfos=pokemon(0 ,16 ,13 ,15 ,14 ,14 ,12 ,23 ,23 ,"Glumanda",["Tackle","Kreideschrei","",""] ,1 ,0 ,5)
+bisasaminfos=pokemon(0 ,14 ,15 ,13 ,17 ,18 ,12 ,19 ,19 ,"Bisasam" ,["Tackle","Heuler","",""] ,1 ,0 ,5)
+
+wasser=tränke("Wasser",10,None)
+trank=tränke("Trank",10,None)
+supertrank=tränke("Supertrank",50,None)
+
+aprikoko=beeren("Aprikokobeere",0,"schlaf")
+pirsif=beeren("Pirsifbeere",0,"vergiftung")
+sinnoh=beeren("Sinnohbeere",10,None)
+sinel=beeren("Sinelbeere",10,None)
 
 passivname="Wasserschwert"
 passivdescription="Wenn du unter wenig HP hast wirst du stärker!"
@@ -149,6 +159,7 @@ def gleichgehtslos():
 def herohouseoben():
     global Map
     Map="Herohouseoben"
+
 def firstspawn():
     global move,karte,ash_front_steht,ashmovecounter,x,y,frontlinksrechts,backlinksrechts,leftlinksrechts,rightlinksrechts,geschlecht,Map,ashguckrichtung,sprechlabel
     move=False
@@ -175,22 +186,24 @@ def firstspawn():
     herohouseoben()
     if(geschlecht=="Junge"):
         ashbewegung()
+
 def uiactive():
     global ui,buileaven,buiinventar,buipokemon,pokemonbag,uipokemon1,uipokemon2,uipokemon3,uipokemon4,uipokemon5,uipokemon6
     ui=Frame(main,width=250,height=250,bg="light blue")
     ui.place(x=340,y=373)
     buileaven=Button(ui,text="Verlassen",font=("Arial",13),width=10,height=1,relief=FLAT,command=uileave)
-    buileaven.place(x=140,y=200)
+    buileaven.place(x=125,y=200)
     buiinventar=Button(ui,text="Inventar",font=("Arial",13),width=10,height=1,relief=FLAT,command=uiinventar)
     buiinventar.place(x=10,y=100)
     buipokemon=Button(ui,text="Pokèmon",font=("Arial",13),width=10,height=1,relief=FLAT,command=uipokemon)
     buipokemon.place(x=10,y=20)
+
 def uipokemon():
     global ui,buileaven,buiinventar,buipokemon,uipokemonback,uipokemon1
     buileaven.destroy()
     buiinventar.destroy()
     buipokemon.destroy()
-    print(pokemonbag[0])
+#    print(pokemonbag[0])
     main.bind("<Key-Down>",cpass)
     main.bind("<Key-Up>",cpass)
     main.bind("<Key-Right>",cpass)
@@ -198,12 +211,11 @@ def uipokemon():
     ui.configure(bg="cornflower blue")
     uipokemonback=Button(ui,text="Zurück",relief=FLAT,bg="dark red",activebackground="red",command=cuipokemonback)
 
-    uipokemon1=Button(ui,text=pokemonbag[0].name,width=9,height=1,font=("Arial",8),command=showpokemon)
+    uipokemon1=Button(ui,text=pokemonbag[0].name,width=12,height=1,font=("Arial",10),command=showpokemon)
 
+    uipokemon1.place(x=15,y=20)
 
-    uipokemon1.place(x=10,y=10)
-
-    uipokemonback.place(x=60,y=130)
+    uipokemonback.place(x=90,y=220)
 
 def showpokemon():
     global uipokemonback,uipokemon1,momentanespokemon,ui,showdisplay,pokemonbag,showpokemon1back,showpokemonstats,showpokemonangriffe,showpokemon1zähler
@@ -221,6 +233,7 @@ def showpokemon():
     showpokemon1back=Button(ui,text="Zurück",bg="dark red",activebackground="red",command=showpokemonback)
     showpokemon1back.place(x=2,y=150)
 pokemonattackentimer=0
+
 def pokemonstats():
     global showdisplay,pokemonbag,momentanespokemon,showhp,showatk,showmagicatk,showdefends,showmagicdefends,showspd,showacc,schiggyinfos,pokemonstatstimer
     showdisplay.destroy()
@@ -228,7 +241,7 @@ def pokemonstats():
     showdisplay=Frame(ui,bg="orange",width=150,height=215)
     showdisplay.place(x=85,y=12)
     showhp=ttk.Progressbar(showdisplay,maximum=pokemonbag[0].maxhp,value=pokemonbag[0].momentanehp)
-    showhptext=Label(showdisplay,text="Leben:",bg="orange")
+    showhptext=Label(showdisplay,text="HP:",bg="orange")
     showatk=Label(showdisplay,bg="dark orange",text="Angriff:"+str(pokemonbag[0].atk)+" "*20,width=30,font=("Arial",10))
     showmagicatk=Label(showdisplay,bg="orange",text="Magischer Angriff:"+str(pokemonbag[0].magicatk)+" "*20,width=30,font=("Arial",10))
     showdefends=Label(showdisplay,bg="dark orange",text="Verteidigung:"+str(pokemonbag[0].defends)+" "*20,width=30,font=("Arial",10))
@@ -242,8 +255,9 @@ def pokemonstats():
     showmagicdefends.place(x=0,y=110)
     showspd.place(x=0,y=160)
     showacc.place(x=0,y=185)
-    showhp.place(x=50,y=5)
-    showhptext.place()
+    showhp.place(x=45,y=5)
+    showhptext.place(x=10,y=5)
+
 def pokemonattacken():
     global schiggyinfos,showdisplay,showattacke1,showattacke2,showattacke3,showattacke4,pokemonstatstimer
     showdisplay.destroy()
@@ -261,6 +275,7 @@ def pokemonattacken():
     showattacke2.place(x=0,y=70)
     showattacke3.place(x=0,y=100)
     showattacke4.place(x=0,y=130)
+
 def showpokemonback():
     global showhp,showatk,showmagicatk,showdefends,showmagicdefends,showspd,showacc,showdisplay,showpokemon1back,showpokemonstats,showpokemonangriffe,showpokemon1zähler
     showdisplay.destroy()
@@ -268,6 +283,7 @@ def showpokemonback():
     showpokemonstats.destroy()
     showpokemonangriffe.destroy()
     uipokemon()
+
 def cuipokemonback():
     global uipokemon1,uipokemon2,uipokemon3,uipokemon4,uipokemon5,uipokemon6,uipokemonback
     uipokemon1.destroy()  
@@ -278,6 +294,7 @@ def cuipokemonback():
     main.bind("<Key-Right>",ashmoveright)
     main.bind("<Key-Left>",ashmoveleft)
     uiactive()
+
 def uiinventar():
     global buiinventar,uiinventartränke,uiinventarback,uiinventardisplay,buileaven,reaktion,inventaranzeige,itemstränke,uiinventarbeeren,buipokemon
     buileaven.destroy()
@@ -292,33 +309,55 @@ def uiinventar():
     main.bind("<Key-Right>",cpass)
     main.bind("<Key-Left>",cpass)
     ui.configure(bg="dark orange")
-    uiinventardisplay=Frame(ui,width=101,height=111,bg="orange")
+    uiinventardisplay=Frame(ui,width=151,height=181,bg="orange")
     uiinventartränke=Button(ui,text="Tränke",relief=FLAT,activeforeground="orange",bg="light blue",command=cuiinventartränke)
     uiinventarback=Button(ui,text="Zurück",relief=FLAT,bg="dark red",activebackground="red",command=cuiinventarback)
     uiinventarbeeren=Button(ui,text="Beeren",relief=FLAT,activeforeground="orange",bg="light blue",command=cuiinventarbeeren)
     inventaranzeige=Label(uiinventardisplay,text="",bg="orange")
     
-    uiinventarback.place(x=60,y=130)
-    uiinventardisplay.place(x=50,y=10)
-    inventaranzeige.place(x=10,y=10)
-    uiinventartränke.place(x=2,y=30)
-    uiinventarbeeren.place(x=2,y=60)
+    uiinventarback.place(x=90,y=215)
+    uiinventardisplay.place(x=90,y=10)
+    inventaranzeige.place(x=50,y=65)
+    uiinventartränke.place(x=10,y=30)
+    uiinventarbeeren.place(x=10,y=70)
+
 def cuiinventarbeeren():
-    global inventaranzeige,itemsbeeren,uiinventardisplay,uiinventarbeeren,uiinventartränke
+    global inventaranzeige,itemsbeeren,uiinventardisplay,uiinventarbeeren,uiinventartränke,beerenbutton,tränkebutton
     uiinventarbeeren.configure(bg="blue")
     uiinventartränke.configure(bg="light blue")
+    beerenbutton=Button(uiinventardisplay,text="")
+
+    try:
+        tränkebutton.destroy()
+    except:
+        beerenbutton.destroy()
+
     if(itemsbeeren==[]):
-        inventaranzeige.configure(text="Leer")
+        beerenbutton.place(x=50,y=65)
+        beerenbutton.configure(text="Leer",font=("Arial",20),relief=FLAT,state="disabled",bg="orange",bd=0,fg="black")
     elif(itemsbeeren!=[]):
-        inventaranzeige.configure(text=itemsbeeren)
+        beerenbutton.destroy()
+        beerenbutton=Button(uiinventardisplay,text="")
+        beerenbutton.place(x=5,y=10)
+        beerenbutton.configure(text=itemsbeeren[0].name,relief=FLAT,state="normal",bg="orange",activebackground="orange")
+
 def cuiinventartränke():
-    global inventaranzeige,itemstränke,uiinventardisplay,uiinventartränke,uiinventarbeeren
+    global inventaranzeige,itemstränke,uiinventardisplay,uiinventartränke,uiinventarbeeren,beerenbutton,tränkebutton
     uiinventartränke.configure(bg="blue")
     uiinventarbeeren.configure(bg="light blue")
+    tränkebutton=Button(uiinventardisplay,text="")
+    try:
+        beerenbutton.destroy()
+    except:
+        tränkebutton.destroy()
     if(itemstränke==[]):
-        inventaranzeige.configure(text="Leer")
+        tränkebutton.place(x=50,y=65)
+        tränkebutton.configure(text="Leer",font=("Arial",20),relief=FLAT,state="disabled",bg="orange",bd=0,fg="black")
     elif(itemstränke!=[]):
-        inventaranzeige.configure(text=itemstränke)
+        tränkebutton=Button(uiinventardisplay,text="")
+        tränkebutton.place(x=5,y=10)
+        tränkebutton.configure(text=itemstränke[0].name,relief=FLAT,state="normal",bg="orange",activebackground="orange")
+
 def cuiinventarback():
     global uiinventardisplay,uiinventartränke,uiinventarback,inventaranzeige
     uiinventardisplay.destroy()
@@ -329,7 +368,6 @@ def cuiinventarback():
     main.bind("<Key-Up>",ashmoveback)
     main.bind("<Key-Right>",ashmoveright)
     main.bind("<Key-Left>",ashmoveleft)
-#    uileaveyes.destroy()
     uiactive()
 
 def uileave():
@@ -611,35 +649,40 @@ kühlschrankasheventzähler=1
 spüleasheventzähler=1
 Itemstv=["Sinobeere","Schutz","Drachenklaue","EP-teiler","Sonderbonbon","Para-Heiler","Aufwecker","Mondstein"]
 eichtv=[",,Seit immer freundlich zu Pokèmon,"+"\n"+"sie sind eure Freunde!",",,Hab immer genügend"+"\n"+"Pokèbälle mit!",",,Benutzt nie ein Fahrrad in Höhlen ,"+"\n"+"das ist gefährlich!",",,Erkundet die Welt und sammelt"+"\n"+"viele neue Freunde und Erfahrung!"]
-beeren=["Amrenabeere","Apikobeere","Fragiabeere","Gauvebeere","Hibisbeere","Himmihbeere","Jabocabeere","Jonagobeere","Kuobeere","Maronbeere","Pirsifbeere","Sananabeere","Sinelbeere","Tsitrubeere","Wilbirbeere"]
-tränke=["Trank","Supertrank","Hypertrank","Wasser"]
+beerenlist=[sinnoh,sinel,aprikoko,pirsif]
+tränkelist=[wasser,trank,supertrank]
+
 def fernsehashevent():
     global ashguckrichtung,reaktion,Itemstv,eichtv,sprechen
     sendungen=['Prof. Eich:'+'\n'+eichtv[random.randint(0,3)]+'!"','Das Item des tages'+'\n'+'ist '+Itemstv[random.randint(0,7)],"Besondere Pokemon","Legendäre Pokemon"]
     reaktion.configure(text=sendungen[random.randint(0,3)],font=("Arial",7))
     sprechen=None
+
 def wiiashevent():
     global ashguckrichtung,reaktion,sprechen
     reaktion.configure(text="Da ist kein Spiel drin...")
     sprechen=None
+
 def  schildashevent():
     global reaktion,sprechen
     reaktion.configure(text="TO DO LISTE:"+"\n"+"1.Kühlschrank aufräumen."+"\n"+"2.Einkaufen gehen."+"\n"+"3.Spülen.")
     sprechen=None
+
 def kühlschrankashevent():
-    global reaktion,kühlschrankasheventzähler,itemsbeeren,beeren,sprechen
+    global reaktion,kühlschrankasheventzähler,itemsbeeren,beerenlist,sprechen
     if(kühlschrankasheventzähler==1):
-        kühlschrankasheventitem=beeren[random.randint(0,14)]
-        reaktion.configure(text="Du hast"+"\n"+kühlschrankasheventitem+" erhalten!",font=("Delphin",10),fg="dark blue")
+        kühlschrankasheventitem=beerenlist[random.randint(0,3)]
+        reaktion.configure(text="Du hast"+"\n"+kühlschrankasheventitem.name+" erhalten!",font=("Delphin",10),fg="dark blue")
         itemsbeeren.append(kühlschrankasheventitem)
         kühlschrankasheventzähler-=1
     elif(kühlschrankasheventzähler==0):
         reaktion.configure(text="Wow,der Kühlschrank ist"+"\n"+"ja ordentlich")
+
 def spüleashevent():
-    global itemstränke,reaktion,tränke,sprechen,spüleasheventzähler
+    global itemstränke,reaktion,tränke,sprechen,spüleasheventzähler,tränkelist
     if(spüleasheventzähler==1):
-        itemstränke.append((tränke[3]))
-        reaktion.configure(text="Du hast"+"\n"+tränke[3]+" erhalten!",fg="dark blue",font=("Delphin",10))
+        itemstränke.append(tränkelist[0])
+        reaktion.configure(text="Du hast"+"\n"+tränkelist[0].name+" erhalten!",fg="dark blue",font=("Delphin",10))
         spüleasheventzähler-=1
     elif(spüleasheventzähler==0):
         reaktion.configure(text="Puh , alles ist Sauber")

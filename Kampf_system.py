@@ -27,6 +27,8 @@ class pokemon(object):
         if(self.ep + menge >=self.epnextlvl):
             self.lvl +=1
             self.epnextlvl += self.epnextlvl*self.lvl
+            self.ep = self.ep + menge
+            print("Glückwunsch "+str(self.name)+" hat Level "+str(self.lvl)+" erreicht!")
         else:
             self.ep += menge
 
@@ -35,10 +37,15 @@ class pokemon(object):
         
 class tränke(object):
 
-    def __init__(self ,name, heilmenge,status):
+    def __init__(self ,name, heilmenge,effekt):
         self.name=name
         self.heilmenge=heilmenge
-        self.status=status
-trank=tränke("Trank",10)
+        self.effekt=effekt
 
+class beeren(object):
+
+    def __init__(self , name , heilmenge , effekt):
+        self.name=name
+        self.heilmenge=heilmenge
+        self.effekt=effekt
         
