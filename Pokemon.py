@@ -3,9 +3,7 @@ from tkinter import *
 import tkinter
 import time
 import random
-from Kampf_system import pokemon
-from Kampf_system import tränke
-from Kampf_system import beeren
+from Kampf_system import *
 
 main=tkinter.Tk()
 main.geometry("1000x800")
@@ -49,7 +47,6 @@ v=StringVar()
 name=v
 ashguckrichtung=None
 starterpokemon=None
-#print(name.get())
 eichcounter=0
 eichcounterpokemon=0
 eicherzählt=0
@@ -68,14 +65,13 @@ spüleash=0
 kühlschrankash=0
 pokemonbag=[]
 
-schiggyinfos=pokemon(0 ,12 ,17 ,14 ,13 ,16 ,13 ,20 ,20 ,"Schiggy" ,["Pfund","Heuler","",""] ,1 ,0 ,5)
-glumandainfos=pokemon(0 ,16 ,13 ,15 ,14 ,14 ,12 ,23 ,23 ,"Glumanda",["Tackle","Kreideschrei","",""] ,1 ,0 ,5)
-bisasaminfos=pokemon(0 ,14 ,15 ,13 ,17 ,18 ,12 ,19 ,19 ,"Bisasam" ,["Tackle","Heuler","",""] ,1 ,0 ,5)
 
+#Tränke werden defeniert
 wasser=tränke("Wasser",10,None)
 trank=tränke("Trank",10,None)
 supertrank=tränke("Supertrank",50,None)
 
+#Beeren werden definiert
 aprikoko=beeren("Aprikokobeere",0,"schlaf")
 pirsif=beeren("Pirsifbeere",0,"vergiftung")
 sinnoh=beeren("Sinnohbeere",10,None)
@@ -231,16 +227,22 @@ def showpokemon():
     ui.configure(bg="dark orange")
     showdisplay.place(x=85,y=12)
     showpokemon1back=Button(ui,text="Zurück",bg="dark red",activebackground="red",command=showpokemonback)
-    showpokemon1back.place(x=2,y=150)
+    showpokemon1back.place(x=2,y=180)
 pokemonattackentimer=0
 
 def pokemonstats():
     global showdisplay,pokemonbag,momentanespokemon,showhp,showatk,showmagicatk,showdefends,showmagicdefends,showspd,showacc,schiggyinfos,pokemonstatstimer
     showdisplay.destroy()
 
+    #Farbe der HP leiste wird hier geändert
+    hpleistenfarbe=ttk.Style()
+    hpleistenfarbe.theme_use("clam")
+    hpleistenfarbe.configure("green.Horizontal.TProgressbar",foreground="green",background="green")
+
+    #stats anzeigen werden generiert
     showdisplay=Frame(ui,bg="orange",width=150,height=215)
     showdisplay.place(x=85,y=12)
-    showhp=ttk.Progressbar(showdisplay,maximum=pokemonbag[0].maxhp,value=pokemonbag[0].momentanehp)
+    showhp=ttk.Progressbar(showdisplay,style="green.Horizontal.TProgressbar",maximum=pokemonbag[0].maxhp,value=pokemonbag[0].momentanehp,)
     showhptext=Label(showdisplay,text="HP:",bg="orange")
     showatk=Label(showdisplay,bg="dark orange",text="Angriff:"+str(pokemonbag[0].atk)+" "*20,width=30,font=("Arial",10))
     showmagicatk=Label(showdisplay,bg="orange",text="Magischer Angriff:"+str(pokemonbag[0].magicatk)+" "*20,width=30,font=("Arial",10))
@@ -248,7 +250,8 @@ def pokemonstats():
     showmagicdefends=Label(showdisplay,bg="orange",text="Magische"+" "*20+"\n"+"Vertdeidigung:"+str(pokemonbag[0].magicdefends)+" "*20,width=30,font=("Arial",10))
     showspd=Label(showdisplay,bg="dark orange",text="Agilität:"+str(pokemonbag[0].spd)+" "*20,width=30,font=("Arial",10))
     showacc=Label(showdisplay,bg="orange",text="Genauigkeit:"+str(pokemonbag[0].acc)+" "*20,width=30,font=("Arial",10))
-    
+
+    #stats werden platziert
     showatk.place(x=0,y=35)
     showmagicatk.place(x=0,y=60)
     showdefends.place(x=0,y=85)
@@ -261,15 +264,17 @@ def pokemonstats():
 def pokemonattacken():
     global schiggyinfos,showdisplay,showattacke1,showattacke2,showattacke3,showattacke4,pokemonstatstimer
     showdisplay.destroy()
-        
-    showdisplay=Frame(ui,bg="white",width=150,height=145)
-    showdisplay.place(x=85,y=12)
-    showattacke1=Label(showdisplay,text=pokemonbag[0].attacken[0]+" "*20,bg="light gray",width=30,font=("Arial",10))
-    showattacke2=Label(showdisplay,text=pokemonbag[0].attacken[1]+" "*20,bg="white",width=30,font=("Arial",10))
-    showattacke3=Label(showdisplay,text=pokemonbag[0].attacken[2]+" "*20,bg="light gray",width=30,font=("Arial",10))
-    showattacke4=Label(showdisplay,text=pokemonbag[0].attacken[3]+" "*20,bg="white",width=30,font=("Arial",10))
+
+    #attacken anzeigen werden generiert
+    showdisplay=Frame(ui,bg="white",width=150,height=185)
+    showdisplay.place(x=90,y=12)
+    showattacke1=Button(showdisplay,text=pokemonbag[0].attacken[0]+" "*20,bg="light gray",width=10,font=("Arial",10))
+    showattacke2=Button(showdisplay,text=pokemonbag[0].attacken[1]+" "*20,bg="white",width=10,font=("Arial",10))
+    showattacke3=Button(showdisplay,text=pokemonbag[0].attacken[2]+" "*20,bg="light gray",width=10,font=("Arial",10))
+    showattacke4=Button(showdisplay,text=pokemonbag[0].attacken[3]+" "*20,bg="white",width=10,font=("Arial",10))
     showname=Label(showdisplay,text="Name:"+pokemonbag[0].name+" "*20,bg="white",width=30,font=("Arial",10))
 
+    #attacken werden platziert
     showname.place(x=0,y=10)
     showattacke1.place(x=0,y=40)
     showattacke2.place(x=0,y=70)
