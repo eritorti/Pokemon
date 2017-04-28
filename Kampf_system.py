@@ -1,6 +1,6 @@
 class pokemon(object):
 
-    def __init__(self , minhp , atk , magicatk , defends , magicdefends , spd , acc , maxhp , momentanehp ,name , attacke , lvl ,ep ,epnextlvl,element,gewicht):
+    def __init__(self , minhp , atk , magicatk , defends , magicdefends , spd , acc , maxhp , momentanehp ,name , attacken , lvl ,ep ,epnextlvl,element,gewicht):
         self.atk=atk
         self.magicatk=magicatk
         self.defends=defends
@@ -11,11 +11,12 @@ class pokemon(object):
         self.momentanehp=momentanehp
         self.name=name
         self.minhp=minhp
-        self.attacke=attacke
+        self.attacken=attacken
         self.lvl=lvl
         self.ep=ep
         self.epnextlvl=epnextlvl
         self.element=element
+
     def schadenskonsole(self , ziel , schaden):
         if(ziel.momentanehp - schaden < ziel.minhp):
             return False
@@ -35,10 +36,16 @@ class pokemon(object):
     def heilen(self,trank):
         self.momentanehp += trank.heilmenge
 
+    def attacke_zuweisen_step_1(self,attacke):
+        self.attacken.append(attacke)
+        self.attacken[0].schaden =self.atk*0.05*self.attacken[0].schaden
+        round(self.attacken[0].schaden,0)
+
 class Schiggy(pokemon):
 
     def __init__(self , minhp , atk , magicatk , defends , magicdefends , spd , acc , maxhp , momentanehp ,name , attacken , lvl ,ep ,epnextlvl,element,gewicht):
-        
+        pokemon.__init__(self , minhp , atk , magicatk , defends , magicdefends , spd , acc , maxhp , momentanehp ,name , attacken , lvl ,ep ,epnextlvl,element,gewicht)
+
 class tränke(object):
 
     def __init__(self ,name, heilmenge,effekt):
@@ -52,16 +59,21 @@ class beeren(object):
         self.name=name
         self.heilmenge=heilmenge
         self.effekt=effekt
-class attacken(object):
 
-    def __init__(self,schaden,effekt):
+class attacken_list(object):
+
+    def __init__(self,name,schaden,effekt):
         self.schaden=schaden
         self.effekt=effekt
+        self.name=name
+
 #Attacken werden definiert
-pfund=attacken(self.atk*0.43,None)
-tackle=attacken(self.gewicht/5*self.atk/5)
+pfund=attacken_list("Pfund",10,None)
+tackle=attacken_list("Tackle",10,None)
+heuler=attacken_list("Heulen",0,None)
 
 #Pokemon werden definiert
-schiggy=Schiggy(0,7,7,9,6,8,11,13,13,"Schiggy",[],1,0,5,"Wasser",23)
+if __name__=="__main__":
+    schiggy=Schiggy(0,7,7,9,6,8,11,13,13,"Schiggy",[],1,0,5,"Wasser",23)
 
 
