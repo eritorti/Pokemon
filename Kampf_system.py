@@ -16,6 +16,7 @@ class pokemon(object):
         self.ep=ep
         self.epnextlvl=epnextlvl
         self.element=element
+        self.gewicht=gewicht
 
     def schadenskonsole(self , ziel , schaden):
         if(ziel.momentanehp - schaden < ziel.minhp):
@@ -36,11 +37,21 @@ class pokemon(object):
     def heilen(self,trank):
         self.momentanehp += trank.heilmenge
 
-    def attacke_zuweisen_step_1(self,attacke):
-        self.attacken.append(attacke)
-        self.attacken[0].schaden =self.atk*0.05*self.attacken[0].schaden
-        round(self.attacken[0].schaden,0)
+    def attacke_zuweisen(self,attacke):
+        #Attacken mit atk skalierung
+        if(attacke.stats_skalierung=="atk"):
+            self.attacken.append(attacke)
+            platz=self.attacken.index(attacke)
+            self.attacken[platz].schaden =self.atk*attacke.skalierung*self.attacken[platz].schaden
+            self.attacken[platz].schaden=int(round(self.attacken[platz].schaden,0))
 
+        #Attacken mit gewicht skalierung
+        elif(attacke.stats_skalierung=="gewicht"):
+            self.attacken.append(attacke)
+            platz=self.attacken.index(attacke)
+            self.attacken[platz].schaden = self.gewicht*attacke.skalierung*self.attacken[platz].schaden*self.atk/5
+            self.attacken[platz].schaden = int(round(self.attacken[platz].schaden,0))
+        
 class Schiggy(pokemon):
 
     def __init__(self , minhp , atk , magicatk , defends , magicdefends , spd , acc , maxhp , momentanehp ,name , attacken , lvl ,ep ,epnextlvl,element,gewicht):
@@ -62,15 +73,17 @@ class beeren(object):
 
 class attacken_list(object):
 
-    def __init__(self,name,schaden,effekt):
+    def __init__(self,name,schaden,effekt,skalierung,stats_skalierung):
         self.schaden=schaden
         self.effekt=effekt
         self.name=name
+        self.skalierung=skalierung
+        self.stats_skalierung=stats_skalierung
 
 #Attacken werden definiert
-pfund=attacken_list("Pfund",10,None)
-tackle=attacken_list("Tackle",10,None)
-heuler=attacken_list("Heulen",0,None)
+pfund=attacken_list("Pfund",10,None,0.06,"atk")
+tackle=attacken_list("Tackle",10,None,0.02,"gewicht")
+heuler=attacken_list("Heulen",0,None,0,None)
 
 #Pokemon werden definiert
 if __name__=="__main__":
