@@ -168,11 +168,3 @@ def klassen_help():
         elif(attacke_zuweisen_auswahl=="attacke"):
             print("-"*20)
             print("Wenn als fehlermeldung: \n \n NameError: name 'attacke_eingabe' is not defined \n steht , haben sie entweder einen falschen namen bzw. einen nicht vorhandenen attacke namen eingegeben , oder sie haben eine zahl eingegeben , beachte für attacke muss ein attacken name hin!")
-
-
-
-        
-
-    
-
-
