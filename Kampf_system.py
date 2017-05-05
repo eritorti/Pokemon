@@ -1,3 +1,4 @@
+import time
 print("Bei fehlern bitte 'klassen_help()' eingeben.")
 class pokemon(object):
 
@@ -21,23 +22,30 @@ class pokemon(object):
 
     #Hier wird der Schaden verteilt , zB im Kampf
     #Muss noch für den Kampf bei wilden und trainer Pokemon optimiert werden !!!!!!
-    def schadenskonsole(self , ziel , attacken_platz):        
-        if(ziel.momentanehp - self.attacken[attacken_platz].schaden < ziel.minhp):
-            print("Pokemon ist schon besiegt!")
-            return False
-        elif(ziel.momentanehp - self.attacken[attacken_platz].schaden > ziel.minhp):
-            ziel.momentanehp -= self.attacken[attacken_platz].schaden
-            return True
-        else:
-            print("Ein fehler ist aufgetreten!")
+    def schadenskonsole(self , ziel , attacke):
+        platz=self.attacken.index(attacke)
 
+        schaden = int(round(attacke.skalierung*self.atk))
+        ziel.momentanehp -= schaden
+
+        print(ziel.name+" hat "+str(schaden)+" Leben verloren.")
+        
     #Hier wird einem Pokemon EP gegeben und bei ausreichenden EP auch ein LVL-UP vergeben
     def lvlup(self ,menge):
-        if(self.ep + menge >=self.epnextlvl):
-            self.lvl +=1
-            self.epnextlvl += self.epnextlvl*self.lvl
-            self.ep = self.ep + menge
-            print("Glückwunsch "+str(self.name)+" hat Level "+str(self.lvl)+" erreicht!")
+        if(menge >= self.epnextlvl):
+            while(menge > 0):
+                menge -= 1
+                self.ep += 1
+                zähler += 1
+
+                if(zähler >= self.epnextlvl):
+                    self.lvl += 1
+                    self.epnextlvl += 10*self.lvl
+                    print(self.name+" hat "+str(self.lvl))
+                    
+                    
+                time.sleep(0.001)
+
         else:
             self.ep += menge
 
@@ -51,18 +59,14 @@ class pokemon(object):
         #Attacken mit atk skalierung
         if(attacke.stats_skalierung=="atk"):
             self.attacken.append(attacke)
-            platz=self.attacken.index(attacke)
-            self.attacken[platz].schaden =self.atk*attacke.skalierung*self.attacken[platz].schaden
-            self.attacken[platz].schaden=int(round(self.attacken[platz].schaden,0))
+            
+            print("Glückwunsch "+self.name+" hat "+attacke.name+" erlernt!")
 
         #Attacken mit gewicht skalierung
         elif(attacke.stats_skalierung=="gewicht"):
             self.attacken.append(attacke)
-            platz=self.attacken.index(attacke)
-            self.attacken[platz].schaden = self.gewicht*attacke.skalierung*self.attacken[platz].schaden*self.atk/5
-            self.attacken[platz].schaden = int(round(self.attacken[platz].schaden,0))
-
-        #elif():
+            
+            print("Glückwunsch "+self.name+" hat "+attacke.name+" erlernt!")
 
 #Klassen für die Pokemon        
 class Schiggy(pokemon):
@@ -99,17 +103,16 @@ class beeren(object):
 #Klasse für Attacken
 class attacken_list(object):
 
-    def __init__(self,name,schaden,effekt,skalierung,stats_skalierung):
-        self.schaden=schaden
+    def __init__(self,name,effekt,skalierung,stats_skalierung):
         self.effekt=effekt
         self.name=name
         self.skalierung=skalierung
         self.stats_skalierung=stats_skalierung
 
 #Attacken werden definiert
-pfund=attacken_list("Pfund",10,None,0.06,"atk")
-tackle=attacken_list("Tackle",10,None,0.02,"gewicht")
-heuler=attacken_list("Heulen",0,None,0,None)
+pfund=attacken_list("Pfund",None,0.6,"atk")
+tackle=attacken_list("Tackle",None,0.2,"gewicht")
+heuler=attacken_list("Heuler",None,0,None)
 
 #Pokemon werden definiert
 if __name__=="__main__":
