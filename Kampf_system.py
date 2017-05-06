@@ -2,7 +2,7 @@ import time
 print("Bei fehlern bitte 'klassen_help()' eingeben.")
 class pokemon(object):
 
-    def __init__(self , minhp , atk , magicatk , defends , magicdefends , spd , acc , maxhp , momentanehp ,name , attacken , lvl ,ep ,epnextlvl,element,gewicht):
+    def __init__(self , minhp , atk , magicatk , defends , magicdefends , spd , acc , maxhp , momentanehp ,name , attacken , lvl ,ep ,epnextlvl,element,gewicht,ep_progress):
         self.atk=atk
         self.magicatk=magicatk
         self.defends=defends
@@ -19,6 +19,7 @@ class pokemon(object):
         self.epnextlvl=epnextlvl
         self.element=element
         self.gewicht=gewicht
+        self.ep_progress=ep_progress
 
     #Hier wird der Schaden verteilt , zB im Kampf
     #Muss noch für den Kampf bei wilden und trainer Pokemon optimiert werden !!!!!!
@@ -36,11 +37,12 @@ class pokemon(object):
             while(menge > 0):
                 menge -= 1
                 self.ep += 1
-                zähler += 1
+                self.ep_progress += 1
 
-                if(zähler >= self.epnextlvl):
+                if(self.ep_progress >= self.epnextlvl or self.ep_progress == self.epnextlvl):
                     self.lvl += 1
                     self.epnextlvl += 10*self.lvl
+                    self.ep_progress = 0
                     print(self.name+" hat "+str(self.lvl))
                     
                     
@@ -48,6 +50,7 @@ class pokemon(object):
 
         else:
             self.ep += menge
+            self.ep_progress += menge
 
     #Hier kann ein Pokemon geheilt werden
     def heilen(self,trank):
@@ -68,21 +71,24 @@ class pokemon(object):
             
             print("Glückwunsch "+self.name+" hat "+attacke.name+" erlernt!")
 
+    def ep_for_next_lvl(self):
+        print(str(self.epnextlvl - self.ep_progress))
+
 #Klassen für die Pokemon        
 class Schiggy(pokemon):
 
-    def __init__(self , minhp , atk , magicatk , defends , magicdefends , spd , acc , maxhp , momentanehp ,name , attacken , lvl ,ep ,epnextlvl,element,gewicht):
-        pokemon.__init__(self , minhp , atk , magicatk , defends , magicdefends , spd , acc , maxhp , momentanehp ,name , attacken , lvl ,ep ,epnextlvl,element,gewicht)
+    def __init__(self , minhp , atk , magicatk , defends , magicdefends , spd , acc , maxhp , momentanehp ,name , attacken , lvl ,ep ,epnextlvl,element,gewicht,ep_progress):
+        pokemon.__init__(self , minhp , atk , magicatk , defends , magicdefends , spd , acc , maxhp , momentanehp ,name , attacken , lvl ,ep ,epnextlvl,element,gewicht,ep_progress)
     
 class Glumanda(pokemon):
 
-    def __init__(self , minhp , atk , magicatk , defends , magicdefends , spd , acc , maxhp , momentanehp ,name , attacken , lvl ,ep ,epnextlvl,element,gewicht):
-        pokemon.__init__(self , minhp , atk , magicatk , defends , magicdefends , spd , acc , maxhp , momentanehp ,name , attacken , lvl ,ep ,epnextlvl,element,gewicht)
+    def __init__(self , minhp , atk , magicatk , defends , magicdefends , spd , acc , maxhp , momentanehp ,name , attacken , lvl ,ep ,epnextlvl,element,gewicht,ep_progress):
+        pokemon.__init__(self , minhp , atk , magicatk , defends , magicdefends , spd , acc , maxhp , momentanehp ,name , attacken , lvl ,ep ,epnextlvl,element,gewicht,ep_progress)
 
 class Bisasam(pokemon):
 
-    def __init__(self , minhp , atk , magicatk , defends , magicdefends , spd , acc , maxhp , momentanehp ,name , attacken , lvl ,ep ,epnextlvl,element,gewicht):
-        pokemon.__init__(self , minhp , atk , magicatk , defends , magicdefends , spd , acc , maxhp , momentanehp ,name , attacken , lvl ,ep ,epnextlvl,element,gewicht)
+    def __init__(self , minhp , atk , magicatk , defends , magicdefends , spd , acc , maxhp , momentanehp ,name , attacken , lvl ,ep ,epnextlvl,element,gewicht,ep_progress):
+        pokemon.__init__(self , minhp , atk , magicatk , defends , magicdefends , spd , acc , maxhp , momentanehp ,name , attacken , lvl ,ep ,epnextlvl,element,gewicht,ep_progress)
 
 #Klasse für Heiltränke usw.
 class tränke(object):
@@ -116,9 +122,9 @@ heuler=attacken_list("Heuler",None,0,None)
 
 #Pokemon werden definiert
 if __name__=="__main__":
-    schiggy=Schiggy(0,7,7,10,6,8,11,13,13,"Schiggy",[],1,0,5,"Wasser",24)
-    glumanda=Glumanda(0,9,6,8,6,10,9,14,14,"Glumanda",[],1,0,5,"Feuer",25)
-    bisasam=Bisasam(0,6,10,7,8,11,10,12,12,"Bisasam",[],1,0,5,"Pflanze",28)
+    schiggy=Schiggy(0,7,7,10,6,8,11,13,13,"Schiggy",[],1,0,5,"Wasser",24,0)
+    glumanda=Glumanda(0,9,6,8,6,10,9,14,14,"Glumanda",[],1,0,5,"Feuer",25,0)
+    bisasam=Bisasam(0,6,10,7,8,11,10,12,12,"Bisasam",[],1,0,5,"Pflanze",28,0)
 
 #Hier wird eine Hilf-funktion erstellt
 def klassen_help():
