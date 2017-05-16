@@ -37,5 +37,5 @@ def main():
         map.render(screen)
         pygame.display.flip()
 
-if __name__=="__main__":
-    main()
+
+main()

@@ -16,7 +16,7 @@ class Enemy:
         deltay = 0
         self.canvas.move(self.enemy , deltax , deltay)
         self.canvas.after(30 , self.move_enemy)
-
+        
 class User:
 
     def __init__(self , canvas , x1 , y1 , x2 , y2):
@@ -27,6 +27,8 @@ class User:
         self.canvas=canvas
         self.user = canvas.create_oval(self.x1 , self.y1 , self.x2 , self.y2 , fill="blue")
 
+        
+        
 def move_left(event):
     deltax = -1
     deltay = 0
@@ -61,8 +63,8 @@ main.bind("<Key-Up>",move_up)
 main.bind("<Key-Down>",move_down)
 main.bind("<Key-Right>",move_right)
     
-enemy1 = Enemy(canvas , 30 , 30 , 10 ,10)
-user1 = User(canvas , 30 , 30 , 10, 10)
+#enemy1 = Enemy(canvas , 160 , 160 , 200 ,200)
+user1 = User(canvas , 100 , 100 , 150, 150)
 
-enemy1.move_enemy()
+#enemy1.move_enemy()
 main.mainloop()
