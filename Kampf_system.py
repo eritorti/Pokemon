@@ -19,7 +19,7 @@ class pokemon(object):
         self.epnextlvl=epnextlvl
         self.element=element
         self.gewicht=gewicht
-        self.ep_progress=ep_progress
+#        self.ep_progress=ep_progress
 
     #Hier wird der Schaden verteilt , zB im Kampf
     #Muss noch für den Kampf bei wilden und trainer Pokemon optimiert werden !!!!!!
@@ -121,10 +121,9 @@ tackle=attacken_list("Tackle",None,0.2,"gewicht")
 heuler=attacken_list("Heuler",None,0,None)
 
 #Pokemon werden definiert
-if __name__=="__main__":
-    schiggy=Schiggy(0,7,7,10,6,8,11,13,13,"Schiggy",[],1,0,5,"Wasser",24,0)
-    glumanda=Glumanda(0,9,6,8,6,10,9,14,14,"Glumanda",[],1,0,5,"Feuer",25,0)
-    bisasam=Bisasam(0,6,10,7,8,11,10,12,12,"Bisasam",[],1,0,5,"Pflanze",28,0)
+schiggy=Schiggy(0,7,7,10,6,8,11,13,13,"Schiggy",[],1,0,5,"Wasser",24,0)
+glumanda=Glumanda(0,9,6,8,6,10,9,14,14,"Glumanda",[],1,0,5,"Feuer",25,0)
+bisasam=Bisasam(0,6,10,7,8,11,10,12,12,"Bisasam",[],1,0,5,"Pflanze",28,0)
 
 #Hier wird eine Hilf-funktion erstellt
 def klassen_help():

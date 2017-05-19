@@ -1,70 +1,30 @@
 from tkinter import *
 import time
 
-class Enemy:
-
-    def __init__(self , canvas , x1 , y1 , x2 , y2):
-        self.x1 = x1
-        self.y1 = y1
-        self.x2 = x2
-        self.y2 = y2
-        self.canvas=canvas
-        self.enemy = canvas.create_oval(self.x1 , self.y1 , self.x2 , self.y2 , fill="dark red")
-
-    def move_enemy(self):
-        deltax = 0
-        deltay = 0
-        self.canvas.move(self.enemy , deltax , deltay)
-        self.canvas.after(30 , self.move_enemy)
-        
-class User:
-
-    def __init__(self , canvas , x1 , y1 , x2 , y2):
-        self.x1 = x1
-        self.y1 = y1
-        self.x2 = x2
-        self.y2 = y2
-        self.canvas=canvas
-        self.user = canvas.create_oval(self.x1 , self.y1 , self.x2 , self.y2 , fill="blue")
-
-        
-        
-def move_left(event):
-    deltax = -1
-    deltay = 0
-    user1.canvas.move(user1.user , deltax , deltay)
-
-def move_right(event):
-    deltax = 1
-    deltay = 0
-    user1.canvas.move(user1.user , deltax , deltay)
-
-def move_up(event):
-    deltay = -1
-    deltax = 0
-    user1.canvas.move(user1.user , deltax , deltay)
-
-def move_down(event):
-    deltay = 1
-    deltax = 0
-    user1.canvas.move(user1.user , deltax , deltay)
-        
-    
-
 main = Tk()
-main.title("Enemys")
-main.resizable(False,False)
-main.geometry("500x500")
-canvas=Canvas(main,width=500,height=500)
-canvas.place(x=0,y=0)
 
-main.bind("<Key-Left>",move_left)
-main.bind("<Key-Up>",move_up)
-main.bind("<Key-Down>",move_down)
-main.bind("<Key-Right>",move_right)
+
+canv =  Canvas(main, width=500, height=500, bg="white")
+canv.pack(expand=YES)
+
+top = canv.create_line(0, 0, 500, 0, fill="black")
+ball = canv.create_oval(230, 230, 250, 250, fill="dark red", tags="ball")
+
+while(canv.find_overlapping(canv.coords(ball)[0],canv.coords(ball)[1],canv.coords(ball)[2],canv.coords(ball)[3]) != 1):
+    time.sleep(0.5)
+    if(canv.find_overlapping(canv.coords(ball)[0],canv.coords(ball)[1],canv.coords(ball)[2],canv.coords(ball)[3]) == 1):
+        print("Herzlichen Glückwunsch Eliseo du bist Klasse!!!")
+    deltax = 0
+    deltay = -1
+    canv.move(ball, deltax, deltay)
+    #canv.after(20, move_ball)
+    canv.update()
     
-#enemy1 = Enemy(canvas , 160 , 160 , 200 ,200)
-user1 = User(canvas , 100 , 100 , 150, 150)
+def show_coords(event):    
+    print(canv.find_overlapping(canv.coords(ball)[0],canv.coords(ball)[1],canv.coords(ball)[2],canv.coords(ball)[3])[0],canv.find_overlapping(canv.coords(top)[0],canv.coords(top)[1],canv.coords(top)[2],canv.coords(top)[3])[0])
 
-#enemy1.move_enemy()
+move_ball()
+
+main.bind("<Key-d>", show_coords)
+
 main.mainloop()
