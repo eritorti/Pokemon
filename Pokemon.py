@@ -8,6 +8,7 @@ from Kampf_system import pokemon
 from Kampf_system import Schiggy
 from Kampf_system import Bisasam
 from Kampf_system import Glumanda
+from Luci_klasse import *
 
 #schiggy=Schiggy(0,7,7,10,6,8,11,13,13,"Schiggy",[],1,0,5,"Wasser",24,0)
 #glumanda=Glumanda(0,9,6,8,6,10,9,14,14,"Glumanda",[],1,0,5,"Feuer",25,0)
@@ -42,6 +43,14 @@ ashleftrechtesbein=PhotoImage(file="ash_left_rechtes_bein.png")
 ashrightsteht=PhotoImage(file="ash_right_stand.png")
 ashrightlinkesbein=PhotoImage(file="ash_right_linkes_bein.png")
 ashrightrechtesbein=PhotoImage(file="ash_right_rechtes_bein.png")
+#################################################################################################
+#Bilde pfade
+luci_left = PhotoImage(file = "luci_left.gif")
+luci_up = PhotoImage(file = "luci_up.gif")
+luci_down = PhotoImage(file = "luci_down.gif")
+luci_right = PhotoImage(file = "luci_right.gif")
+luci_move_right_right = PhotoImage(file = "luci_right_move_right.gif")
+luci_move_right_left = PhotoImage(file = "luci_right_move_left.gif")   
 #############################################################################################
 herohouseup=PhotoImage(file="herohouseoben.png")
 herohousedown=PhotoImage(file="herohouseunten.png")
@@ -273,22 +282,22 @@ def pokemonstats():
 def pokemonattacken():
     global schiggyinfos,showdisplay,showattacke1,showattacke2,showattacke3,showattacke4,pokemonstatstimer
     showdisplay.destroy()
-
-    #attacken anzeigen werden generiert
     showdisplay=Frame(ui,bg="white",width=150,height=185)
     showdisplay.place(x=90,y=12)
-    showattacke1=Button(showdisplay,text=pokemonbag[0].attacken[0]+" "*20,bg="light gray",width=10,font=("Arial",10))
-    showattacke2=Button(showdisplay,text=pokemonbag[0].attacken[1]+" "*20,bg="white",width=10,font=("Arial",10))
-    showattacke3=Button(showdisplay,text=pokemonbag[0].attacken[2]+" "*20,bg="light gray",width=10,font=("Arial",10))
-    showattacke4=Button(showdisplay,text=pokemonbag[0].attacken[3]+" "*20,bg="white",width=10,font=("Arial",10))
+    zaehler = -1
+    slot_y = 40
+
+    for i in range(len(pokemonbag[0].attacken)):
+        zaehler += 1
+        slot = Label(showdisplay, text=str(pokemonbag[0].attacken[zaehler].name), width = 12, font = ("Arial", 15))
+        slot.place(x = 0, y=slot_y)
+        slot_y += 40
+    
     showname=Label(showdisplay,text="Name:"+pokemonbag[0].name+" "*20,bg="white",width=30,font=("Arial",10))
 
     #attacken werden platziert
     showname.place(x=0,y=10)
-    showattacke1.place(x=0,y=40)
-    showattacke2.place(x=0,y=70)
-    showattacke3.place(x=0,y=100)
-    showattacke4.place(x=0,y=130)
+    
 
 def showpokemonback():
     global showhp,showatk,showmagicatk,showdefends,showmagicdefends,showspd,showacc,showdisplay,showpokemon1back,showpokemonstats,showpokemonangriffe,showpokemon1zähler
@@ -800,7 +809,7 @@ def ashmoveleft(event):
             main.bind("<Key-Right>",ashmoveright)
             main.bind("<Key-Left>",ashmoveleft)            
             
-                
+              
 
 def ashmoveright(event):
     global rightlinksrechts,backlinksrechts,leftlinksrechts,frontlinksrechts,x,y,Map,karte,ashguckrichtung,Ash,ashs,map,sprechen,fernash,reaktion,wiiash,sprechlabel,kühlschrankash,spüleash,schildash
@@ -853,7 +862,8 @@ def ashmoveright(event):
             wiiash=0
             schildash=0
             sprechlabel.configure(bg="gray",state="disabled")
-        elif(x>=134 and y<=59):
+
+        elif(x>=134 and y<=59): 
             main.bind("<Key-Down>",cpass)
             main.bind("<Key-Up>",cpass)
             main.bind("<Key-Right>",cpass)
@@ -871,7 +881,11 @@ def ashmoveright(event):
             x=148
             y=38
             karte.create_image(88,81,image=herohousedown,tags="map")
-
+            try:
+                luci.destroy()
+            except:
+                luci = Label(karte, image = luci_right)
+                luci.place(x = 116, y = 62)
 
     elif(Map=="Herohouseunten"):
         #wand
@@ -962,6 +976,7 @@ def bisasamfrage():
     global bisasam,bisasamcounter,jabisasam,neinbisasam,starterpokemon,pokemonbag,bisasaminfos
     bisasamcounter +=1
     starterpokemon=bisasam
+
     pokeball1.destroy()
     pokeball2.destroy()
     pokeball3.destroy()
@@ -1134,9 +1149,6 @@ def cstartback():
 
 def cverlassen():
     main.destroy()
-def it(event):
-    pokemonbag[0].schadenskonsole(pokemonbag[0],7)
-main.bind("<Key-i>",it)
 
 
 menü()
